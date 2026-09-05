@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+@theme {
+  /* Surfaces */
+  --color-canvas: #0a0e12;
+  --color-surface: #10151b;
+  --color-surface-raised: #161d26;
+  --color-border: #232d3a;
+  --color-border-soft: #1a222c;
+
+  /* Text */
+  --color-text-high: #edf1f5;
+  --color-text-mid: #9caab8;
+  --color-text-low: #5c6875;
+
+  /* Accents */
+  --color-amber: #e3a857;
+  --color-amber-soft: #e3a85733;
+  --color-teal: #3ed9c4;
+  --color-teal-soft: #3ed9c433;
+
+  /* Status (reused inventory taxonomy: Keep / Watch / Reduce / Remove) */
+  --color-status-keep: #3ed9c4;
+  --color-status-watch: #e3a857;
+  --color-status-reduce: #e8834f;
+  --color-status-remove: #e0555a;
+
+  /* Type */
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --breakpoint-xs: 420px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-text-high);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-teal);
+  color: #071012;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-low);
+}
+
+/* Visible keyboard focus */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 3px;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Corner-bracket HUD frame, used sparingly as the signature device */
+.bracket-frame {
+  position: relative;
+}
+.bracket-frame::before,
+.bracket-frame::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--color-teal);
+  opacity: 0.7;
+}
+.bracket-frame::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+.bracket-frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide the native cursor only on devices with a precise pointer, where the
+   custom cursor component takes over. Touch devices keep the system cursor. */
+@media (pointer: fine) {
+  body, a, button {
+    cursor: none;
+  }
+}
