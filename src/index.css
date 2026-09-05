@@ -135,10 +135,14 @@ textarea:focus-visible,
   scrollbar-width: none;
 }
 
-/* Hide the native cursor only on devices with a precise pointer, where the
-   custom cursor component takes over. Touch devices keep the system cursor. */
+/* Hide the native cursor only once the CustomCursor component has confirmed
+   it's actively rendering (adds this class via JS on first mousemove).
+   This avoids a blank/invisible cursor before the first mouse movement,
+   or if the component fails to mount for any reason. */
 @media (pointer: fine) {
-  body, a, button {
+  html.custom-cursor-active body,
+  html.custom-cursor-active a,
+  html.custom-cursor-active button {
     cursor: none;
   }
 }

@@ -23,9 +23,19 @@ export function CustomCursor() {
         dotRef.current.style.transform = `translate(${target.x}px, ${target.y}px)`
       }
       setHidden(false)
+      // Only hide the native cursor once we've confirmed the custom one
+      // is actually tracking the mouse — prevents a blank cursor on load.
+      document.documentElement.classList.add('custom-cursor-active')
 
       const el = e.target as HTMLElement
       setActive(Boolean(el.closest('[data-cursor="interactive"], a, button')))
+    }
+
+    const handleLeave = () => {
+      setHidden(true)
+      // Restore the native cursor while the pointer is outside the window
+      // (e.g. over the browser chrome), so it's never left invisible.
+      document.documentElement.classList.remove('custom-cursor-active')
     }
 
     const animateRing = () => {
@@ -38,11 +48,13 @@ export function CustomCursor() {
     }
 
     window.addEventListener('mousemove', handleMove, { passive: true })
-    window.addEventListener('mouseleave', () => setHidden(true))
+    window.addEventListener('mouseleave', handleLeave)
     frame = requestAnimationFrame(animateRing)
 
     return () => {
       window.removeEventListener('mousemove', handleMove)
+      window.removeEventListener('mouseleave', handleLeave)
+      document.documentElement.classList.remove('custom-cursor-active')
       cancelAnimationFrame(frame)
     }
   }, [isTouch])
