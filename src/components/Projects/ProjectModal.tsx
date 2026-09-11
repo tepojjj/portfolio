@@ -81,7 +81,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
             <div className="p-6 md:p-8 space-y-8">
               <div className="flex flex-wrap gap-1.5">
-                {project.tech.map((t) => (
+                {(project.tech ?? []).map((t) => (
                   <Tag key={t}>{t}</Tag>
                 ))}
               </div>
@@ -96,7 +96,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               <div>
                 <p className="font-mono text-xs text-text-low mb-3">KEY FEATURES</p>
                 <ul className="space-y-2">
-                  {project.features.map((f) => (
+                  {(project.features ?? []).map((f) => (
                     <li key={f} className="flex gap-3 text-sm text-text-mid">
                       <span className="text-teal mt-1.5 w-1 h-1 rounded-full bg-teal shrink-0" />
                       {f}

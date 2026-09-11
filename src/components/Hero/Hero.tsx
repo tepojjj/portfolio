@@ -23,7 +23,7 @@ export function Hero() {
       aria-label="Home"
       className="relative min-h-[100svh] flex items-center overflow-hidden"
     >
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none">
         <Suspense fallback={null}>
           <Scene containerRef={containerRef} scrollProgress={scrollProgress} />
         </Suspense>

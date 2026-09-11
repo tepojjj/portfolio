@@ -76,7 +76,7 @@ export function SectionCanvas({
   }, [isTouch])
 
   return (
-    <div ref={wrapperRef} className={`absolute inset-0 ${className}`} aria-hidden="true">
+    <div ref={wrapperRef} className={`absolute inset-0 pointer-events-none ${className}`} aria-hidden="true">
       {webglSupported === false ? (
         fallback
       ) : webglSupported === null ? null : (

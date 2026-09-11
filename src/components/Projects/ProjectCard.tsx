@@ -69,7 +69,7 @@ export function ProjectCard({ project, onOpen }: ProjectCardProps) {
           <p className="mt-2 text-sm text-text-mid line-clamp-2">{project.description}</p>
 
           <div className="mt-4 flex flex-wrap gap-1.5">
-            {project.tech.slice(0, 4).map((t) => (
+            {(project.tech ?? []).slice(0, 4).map((t) => (
               <Tag key={t}>{t}</Tag>
             ))}
           </div>
