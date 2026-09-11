@@ -44,3 +44,21 @@ export const emptyDraft: ProjectDraft = {
   accent: 'teal',
   sort_order: 0,
 }
+
+/** Row shape as stored in the Supabase `site_contact` table (single row, id = 1). */
+export interface DbSiteContact {
+  id: number
+  email: string
+  phone: string
+  linkedin: string
+  updated_at: string
+}
+
+/** Fields the admin form edits. */
+export type ContactDraft = Omit<DbSiteContact, 'id' | 'updated_at'>
+
+export const emptyContactDraft: ContactDraft = {
+  email: '',
+  phone: '',
+  linkedin: '',
+}

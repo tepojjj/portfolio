@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Code2, ExternalLink } from 'lucide-react'
 import type { Project } from '@/data/projects'
 import { Tag } from '@/components/shared/StatusTag'
+import { normalizeUrl } from '@/utils/url'
 
 interface ProjectModalProps {
   project: Project | null
@@ -110,20 +111,41 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
 
               <div className="flex gap-3 pt-2">
-                <a
-                  href={project.github ?? '#'}
-                  data-cursor="interactive"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 border border-border text-sm text-text-high hover:border-teal hover:text-teal transition-colors"
-                >
-                  <Code2 size={16} /> View Code
-                </a>
-                <a
-                  href={project.demo ?? '#'}
-                  data-cursor="interactive"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-teal text-canvas text-sm hover:bg-teal/90 transition-colors"
-                >
-                  <ExternalLink size={16} /> Live Demo
-                </a>
+                {(() => {
+                  const github = normalizeUrl(project.github)
+                  const demo = normalizeUrl(project.demo)
+                  return (
+                    <>
+                      {github && (
+                        <a
+                          href={github}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          data-cursor="interactive"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 border border-border text-sm text-text-high hover:border-teal hover:text-teal transition-colors"
+                        >
+                          <Code2 size={16} /> View Code
+                        </a>
+                      )}
+                      {demo && (
+                        <a
+                          href={demo}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          data-cursor="interactive"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-teal text-canvas text-sm hover:bg-teal/90 transition-colors"
+                        >
+                          <ExternalLink size={16} /> Live Demo
+                        </a>
+                      )}
+                      {!github && !demo && (
+                        <p className="text-text-low text-sm font-mono">
+                          No code or live link added for this project yet.
+                        </p>
+                      )}
+                    </>
+                  )
+                })()}
               </div>
             </div>
           </motion.div>

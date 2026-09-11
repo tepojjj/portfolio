@@ -2,11 +2,15 @@ import { useCallback, useEffect, useState } from 'react'
 import { LogOut, Plus, Pencil, Trash2, ExternalLink } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import type { DbProject, ProjectDraft } from '@/lib/types'
+import { normalizeUrl } from '@/utils/url'
 import { ProjectForm } from './ProjectForm'
+import { ContactInfoForm } from './ContactInfoForm'
 
 type ViewState = { mode: 'list' } | { mode: 'create' } | { mode: 'edit'; project: DbProject }
+type Tab = 'projects' | 'contact'
 
 export function AdminDashboard() {
+  const [tab, setTab] = useState<Tab>('projects')
   const [projects, setProjects] = useState<DbProject[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -62,7 +66,7 @@ export function AdminDashboard() {
       <div className="mx-auto max-w-4xl">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-display text-2xl md:text-3xl text-text-high">Projects admin</h1>
+            <h1 className="font-display text-2xl md:text-3xl text-text-high">Site admin</h1>
             <p className="text-text-mid text-sm mt-1">
               Changes here show up on the live site the next time it's loaded.
             </p>
@@ -75,9 +79,32 @@ export function AdminDashboard() {
           </button>
         </div>
 
+        <div className="flex items-center gap-1 mb-8 border-b border-border-soft">
+          {(
+            [
+              { id: 'projects', label: 'Projects' },
+              { id: 'contact', label: 'Contact info' },
+            ] as const
+          ).map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={`px-4 py-2.5 text-sm border-b-2 -mb-px transition-colors ${
+                tab === t.id
+                  ? 'text-text-high border-teal'
+                  : 'text-text-mid border-transparent hover:text-text-high'
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
         {error && <p className="text-status-remove text-sm mb-4">{error}</p>}
 
-        {view.mode === 'list' && (
+        {tab === 'contact' && <ContactInfoForm />}
+
+        {tab === 'projects' && view.mode === 'list' && (
           <>
             <button
               onClick={() => setView({ mode: 'create' })}
@@ -102,9 +129,9 @@ export function AdminDashboard() {
                       <p className="text-text-low text-xs font-mono truncate">/{project.slug}</p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      {project.demo && (
+                      {normalizeUrl(project.demo) && (
                         <a
-                          href={project.demo}
+                          href={normalizeUrl(project.demo)!}
                           target="_blank"
                           rel="noreferrer"
                           className="p-2 text-text-mid hover:text-teal transition-colors"
@@ -135,7 +162,7 @@ export function AdminDashboard() {
           </>
         )}
 
-        {view.mode === 'create' && (
+        {tab === 'projects' && view.mode === 'create' && (
           <ProjectForm
             submitLabel="Create project"
             onCancel={() => setView({ mode: 'list' })}
@@ -143,7 +170,7 @@ export function AdminDashboard() {
           />
         )}
 
-        {view.mode === 'edit' && (
+        {tab === 'projects' && view.mode === 'edit' && (
           <ProjectForm
             initial={view.project}
             submitLabel="Save changes"

@@ -1,20 +1,29 @@
 import { lazy, Suspense } from 'react'
-import { Mail, Code2, Link2 } from 'lucide-react'
+import { Mail, Phone, Link2 } from 'lucide-react'
 import { Section, SectionHeading } from '@/components/shared/Section'
 import { RevealOnScroll } from '@/components/shared/RevealOnScroll'
+import { useSiteContact } from '@/hooks/useSiteContact'
 import { ContactForm } from './ContactForm'
 
 const ContactScene = lazy(() =>
   import('@/components/ThreeScene/scenes/ContactScene').then((m) => ({ default: m.ContactScene }))
 )
 
-const links = [
-  { icon: Mail, label: 'Email', value: 'hello@jet-dev.com', href: 'mailto:hello@jet-dev.com' },
-  { icon: Code2, label: 'GitHub', value: 'github.com/jet-dev', href: 'https://github.com/jet-dev' },
-  { icon: Link2, label: 'LinkedIn', value: 'linkedin.com/in/jet-dev', href: 'https://linkedin.com/in/jet-dev' },
-]
+function toHref(kind: 'email' | 'phone' | 'linkedin', value: string): string {
+  if (kind === 'email') return `mailto:${value}`
+  if (kind === 'phone') return `tel:${value.replace(/[^+\d]/g, '')}`
+  return value.startsWith('http') ? value : `https://${value}`
+}
 
 export function Contact() {
+  const { contact } = useSiteContact()
+
+  const links = [
+    { icon: Mail, label: 'Email', value: contact.email, href: toHref('email', contact.email) },
+    { icon: Phone, label: 'Phone', value: contact.phone, href: toHref('phone', contact.phone) },
+    { icon: Link2, label: 'LinkedIn', value: contact.linkedin, href: toHref('linkedin', contact.linkedin) },
+  ]
+
   return (
     <Section id="contact" label="Contact" className="border-t border-border-soft relative overflow-hidden">
       <Suspense fallback={null}>

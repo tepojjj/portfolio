@@ -14,9 +14,13 @@ input before this goes live:
 - **`src/data/experience.ts`** — only your current UBEST role is filled in
   with real detail. Duplicate that entry with your earlier roles (or delete
   the placeholder if this is your first).
-- **Contact links** (`src/components/Contact/Contact.tsx` and
-  `src/components/Footer/Footer.tsx`) — the email/GitHub/LinkedIn URLs are
-  placeholders (`jet-dev`). Swap in your real handles.
+- **Contact info** (Email / Phone / LinkedIn) — now editable from the admin
+  panel's "Contact info" tab instead of hardcoded, so you can update it
+  without redeploying. It starts out with placeholder values (`jet-dev`,
+  a fake phone number) until you set real ones — see the admin panel
+  section below. The Footer's GitHub/LinkedIn/Email icons
+  (`src/components/Footer/Footer.tsx`) are still hardcoded; swap in your
+  real handles there separately.
 - **`public/resume.pdf`** — the "Download Resume" button links here; add
   your actual resume PDF to `public/`.
 - **`public/og-image.png`** — referenced in the social-share meta tags in
@@ -46,10 +50,13 @@ live site the next time it loads — no rebuild or redeploy needed.
 
 **1. Create a Supabase project** at [supabase.com](https://supabase.com) (free tier is enough).
 
-**2. Run the migration.** In the Supabase dashboard, go to SQL Editor > New
+**2. Run the migrations.** In the Supabase dashboard, go to SQL Editor > New
 query, paste the contents of `supabase/migrations/0001_create_projects.sql`,
 and run it. This creates the `projects` table with row-level security
-(anyone can read; only logged-in users can write).
+(anyone can read; only logged-in users can write). Then do the same with
+`supabase/migrations/0002_create_site_contact.sql`, which creates a
+`site_contact` table (a single editable row for Email/Phone/LinkedIn,
+seeded with placeholder values) behind the same read/write policy pattern.
 
 **3. (Optional) Seed your existing projects.** Run `supabase/seed.sql` the
 same way to preload the 5 projects that used to be hardcoded, so the table
@@ -67,8 +74,9 @@ cp .env.example .env.local
 ```
 
 **6. Restart the dev server**, then visit `/admin` and sign in with the
-user you created in step 4. You'll land on `/admin/dashboard`, where you
-can add, edit, and delete projects.
+user you created in step 4. You'll land on `/admin/dashboard`, which has
+two tabs: **Projects** (add, edit, delete) and **Contact info** (edit the
+Email/Phone/LinkedIn shown in the Contact section).
 
 If you deploy to Vercel/Netlify/etc., add the same two env vars
 (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) in that platform's project
