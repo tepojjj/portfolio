@@ -34,17 +34,19 @@ export function Portfolio() {
         <>
           <CustomCursor />
           <Navbar />
-          <main>
-            <Hero />
-            <About />
-            <Skills />
-            <Projects />
-            <Experience />
-            <Analytics />
-            <Services />
-            <Contact />
-          </main>
-          <Footer />
+          <div className="lg:pl-72">
+            <main className="pt-16 lg:pt-0">
+              <Hero />
+              <About />
+              <Skills />
+              <Projects />
+              <Experience />
+              <Analytics />
+              <Services />
+              <Contact />
+            </main>
+            <Footer />
+          </div>
         </>
       )}
     </>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { useActiveSection } from '@/hooks/useScrollProgress'
+import profileImg from '@/assets/profile.png'
 
 const NAV_ITEMS = [
   { id: 'home', label: 'Home' },
@@ -17,16 +18,15 @@ const NAV_ITEMS = [
 const NAV_IDS = NAV_ITEMS.map((i) => i.id)
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const active = useActiveSection(NAV_IDS)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileOpen])
 
   const handleNav = (id: string) => {
     setMobileOpen(false)
@@ -35,50 +35,87 @@ export function Navbar() {
 
   return (
     <>
-      <header
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-          scrolled ? 'py-3' : 'py-6'
-        }`}
+      {/* Desktop sidebar */}
+      <aside
+        aria-label="Primary"
+        className="hidden lg:flex fixed inset-y-0 left-0 z-50 w-72 flex-col bg-surface/90 backdrop-blur-md border-r border-border"
       >
-        <nav
-          aria-label="Primary"
-          className={`mx-auto max-w-6xl px-5 flex items-center justify-between transition-all duration-300 rounded-lg ${
-            scrolled ? 'bg-surface/80 backdrop-blur-md border border-border py-2.5' : 'bg-transparent py-1'
-          }`}
-        >
+        <div className="px-6 pt-8 pb-6 border-b border-border-soft">
           <button
             onClick={() => handleNav('home')}
-            className="font-display text-lg text-text-high"
             data-cursor="interactive"
+            className="flex items-center gap-3 group w-full"
             aria-label="Go to top"
           >
-            Jopet Pallarcon <span className="text-teal">.</span>
+            <span className="relative w-12 h-12 shrink-0 rounded-full overflow-hidden ring-2 ring-border group-hover:ring-teal transition-colors">
+              <img
+                src={profileImg}
+                alt="Jopet Pallarcon"
+                className="w-full h-full object-cover object-top"
+              />
+            </span>
+            <span className="font-display text-lg text-text-high text-left leading-tight">
+              Jopet Pallarcon <span className="text-teal">.</span>
+            </span>
           </button>
+        </div>
 
-          <ul className="hidden lg:flex items-center gap-1">
-            {NAV_ITEMS.slice(1).map((item) => (
+        <nav className="flex-1 overflow-y-auto px-4 py-6">
+          <ul className="flex flex-col gap-1">
+            {NAV_ITEMS.map((item) => (
               <li key={item.id}>
                 <button
                   onClick={() => handleNav(item.id)}
                   data-cursor="interactive"
-                  className={`relative px-3 py-2 text-sm transition-colors ${
-                    active === item.id ? 'text-text-high' : 'text-text-mid hover:text-text-high'
+                  className={`relative w-full text-left px-4 py-3 text-sm rounded-md border transition-colors ${
+                    active === item.id
+                      ? 'text-text-high bg-teal-soft border-teal/40'
+                      : 'text-text-mid border-transparent hover:text-text-high hover:bg-surface-raised hover:border-border'
                   }`}
                 >
-                  {item.label}
                   {active === item.id && (
                     <motion.span
-                      layoutId="nav-active"
-                      className="absolute left-3 right-3 -bottom-0.5 h-px bg-teal"
+                      layoutId="nav-active-rail"
+                      className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-teal rounded-full"
                     />
                   )}
+                  <span className="pl-2">{item.label}</span>
                 </button>
               </li>
             ))}
           </ul>
+        </nav>
+
+        <div className="px-6 py-5 border-t border-border-soft">
+          <p className="font-mono text-[11px] text-text-low">
+            © {new Date().getFullYear()} Jopet Pallarcon
+          </p>
+        </div>
+      </aside>
+
+      {/* Mobile top bar */}
+      <header className="lg:hidden fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-md border-b border-border">
+        <div className="flex items-center justify-between px-5 py-3">
+          <button
+            onClick={() => handleNav('home')}
+            data-cursor="interactive"
+            className="flex items-center gap-2.5"
+            aria-label="Go to top"
+          >
+            <span className="w-9 h-9 shrink-0 rounded-full overflow-hidden ring-2 ring-border">
+              <img
+                src={profileImg}
+                alt="Jopet Pallarcon"
+                className="w-full h-full object-cover object-top"
+              />
+            </span>
+            <span className="font-display text-base text-text-high">
+              Jopet Pallarcon <span className="text-teal">.</span>
+            </span>
+          </button>
 
           <button
-            className="lg:hidden text-text-high"
+            className="text-text-high"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
@@ -86,7 +123,7 @@ export function Navbar() {
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
-        </nav>
+        </div>
       </header>
 
       <AnimatePresence>
@@ -97,6 +134,13 @@ export function Navbar() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 bg-canvas/98 backdrop-blur-lg lg:hidden flex flex-col items-center justify-center gap-2"
           >
+            <span className="w-16 h-16 mb-4 rounded-full overflow-hidden ring-2 ring-teal/50">
+              <img
+                src={profileImg}
+                alt="Jopet Pallarcon"
+                className="w-full h-full object-cover object-top"
+              />
+            </span>
             {NAV_ITEMS.map((item) => (
               <button
                 key={item.id}
