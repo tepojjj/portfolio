@@ -2,28 +2,28 @@
 
 @theme {
   /* Surfaces */
-  --color-canvas: #0f2a1d;
-  --color-surface: #142e20;
-  --color-surface-raised: #1a3524;
-  --color-border: #375534;
-  --color-border-soft: #24402c;
+  --color-canvas: #f3f4ee;
+  --color-surface: #fbfcf8;
+  --color-surface-raised: #ffffff;
+  --color-border: #d7dcd0;
+  --color-border-soft: #e7eae1;
 
   /* Text */
-  --color-text-high: #e3eed4;
-  --color-text-mid: #aec3b0;
-  --color-text-low: #6b9071;
+  --color-text-high: #16281b;
+  --color-text-mid: #45564a;
+  --color-text-low: #718274;
 
   /* Accents */
-  --color-amber: #AEC3B0;
-  --color-amber-soft: #AEC3B033;
-  --color-teal: #6B9071;
-  --color-teal-soft: #6B907133;
+  --color-amber: #7c9471;
+  --color-amber-soft: #7c947133;
+  --color-teal: #3f6b46;
+  --color-teal-soft: #3f6b4633;
 
   /* Status (reused inventory taxonomy: Keep / Watch / Reduce / Remove) */
-  --color-status-keep: #6B9071;
-  --color-status-watch: #AEC3B0;
-  --color-status-reduce: #e8834f;
-  --color-status-remove: #e0555a;
+  --color-status-keep: #3f6b46;
+  --color-status-watch: #7c9471;
+  --color-status-reduce: #c96a35;
+  --color-status-remove: #c23b40;
 
   /* Type */
   --font-display: "Space Grotesk", "Inter", sans-serif;

@@ -70,8 +70,8 @@ export function Scene({ containerRef, scrollProgress }: SceneProps) {
     >
       <Suspense fallback={null}>
         <ambientLight intensity={0.4} />
-        <pointLight position={[5, 4, 5]} intensity={1.1} color="#6B9071" />
-        <pointLight position={[-5, -3, -4]} intensity={0.6} color="#AEC3B0" />
+        <pointLight position={[5, 4, 5]} intensity={1.1} color="#3F6B46" />
+        <pointLight position={[-5, -3, -4]} intensity={0.6} color="#7C9471" />
         <directionalLight position={[0, 5, 2]} intensity={0.3} />
 
         <CoreObject visibleRef={visibleRef} reducedMotion={reducedMotion} />

@@ -64,15 +64,15 @@ export function Analytics() {
               <AreaChart data={salesTrend}>
                 <defs>
                   <linearGradient id="salesFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#6B9071" stopOpacity={0.35} />
-                    <stop offset="100%" stopColor="#6B9071" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#3F6B46" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="#3F6B46" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="#1a222c" vertical={false} />
                 <XAxis dataKey="month" stroke="#5c6875" fontSize={11} tickLine={false} axisLine={false} />
                 <YAxis stroke="#5c6875" fontSize={11} tickLine={false} axisLine={false} width={40} tickFormatter={(v) => `${v / 1000}k`} />
                 <Tooltip contentStyle={tooltipStyle} formatter={(v) => [`₱${Number(v).toLocaleString()}`, 'Sales']} />
-                <Area type="monotone" dataKey="sales" stroke="#6B9071" strokeWidth={2} fill="url(#salesFill)" />
+                <Area type="monotone" dataKey="sales" stroke="#3F6B46" strokeWidth={2} fill="url(#salesFill)" />
               </AreaChart>
             </ResponsiveContainer>
           </ChartPanel>
@@ -113,7 +113,7 @@ export function Analytics() {
                 <XAxis type="number" stroke="#5c6875" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `${v / 1000}k`} />
                 <YAxis dataKey="channel" type="category" stroke="#9caab8" fontSize={12} tickLine={false} axisLine={false} width={90} />
                 <Tooltip contentStyle={tooltipStyle} formatter={(v) => [`₱${Number(v).toLocaleString()}`, 'Revenue']} />
-                <Bar dataKey="revenue" fill="#AEC3B0" radius={[0, 3, 3, 0]} />
+                <Bar dataKey="revenue" fill="#7C9471" radius={[0, 3, 3, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </ChartPanel>
@@ -127,8 +127,8 @@ export function Analytics() {
                 <XAxis dataKey="month" stroke="#5c6875" fontSize={11} tickLine={false} axisLine={false} />
                 <YAxis stroke="#5c6875" fontSize={11} tickLine={false} axisLine={false} width={40} tickFormatter={(v) => `${v / 1000}k`} />
                 <Tooltip contentStyle={tooltipStyle} formatter={(v) => (v ? [`₱${Number(v).toLocaleString()}`, ''] : ['—', ''])} />
-                <Line type="monotone" dataKey="actual" stroke="#6B9071" strokeWidth={2} dot={{ r: 3 }} connectNulls={false} />
-                <Line type="monotone" dataKey="forecast" stroke="#AEC3B0" strokeWidth={2} strokeDasharray="4 4" dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="actual" stroke="#3F6B46" strokeWidth={2} dot={{ r: 3 }} connectNulls={false} />
+                <Line type="monotone" dataKey="forecast" stroke="#7C9471" strokeWidth={2} strokeDasharray="4 4" dot={{ r: 3 }} />
               </LineChart>
             </ResponsiveContainer>
           </ChartPanel>

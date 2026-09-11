@@ -28,7 +28,7 @@ function ServicesMesh({ visibleRef, mouseRef, reducedMotion, isMobile }: SceneRe
         size: 0.28 + (i % 2) * 0.14,
         speed: 0.2 + (i % 3) * 0.08,
         offset: i * 1.1,
-        color: i % 2 === 0 ? '#6B9071' : '#AEC3B0',
+        color: i % 2 === 0 ? '#3F6B46' : '#7C9471',
       }
     })
   }, [isMobile])
@@ -55,7 +55,7 @@ function ServicesMesh({ visibleRef, mouseRef, reducedMotion, isMobile }: SceneRe
   return (
     <group ref={groupRef}>
       <ambientLight intensity={0.4} />
-      <pointLight position={[3, 3, 4]} intensity={0.8} color="#AEC3B0" />
+      <pointLight position={[3, 3, 4]} intensity={0.8} color="#7C9471" />
       {blocks.map((def, i) => (
         <mesh key={i} ref={(el) => { blockRefs.current[i] = el }} position={def.pos}>
           <boxGeometry args={[def.size, def.size, def.size]} />

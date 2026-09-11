@@ -11,7 +11,7 @@ interface NodeDef {
   color: string
 }
 
-const COLORS = ['#6B9071', '#AEC3B0', '#6B9071', '#AEC3B0', '#6B9071']
+const COLORS = ['#3F6B46', '#7C9471', '#3F6B46', '#7C9471', '#3F6B46']
 
 function SkillsMesh({ visibleRef, reducedMotion, isMobile }: SceneRenderArgs) {
   const groupRef = useRef<THREE.Group>(null)
@@ -76,7 +76,7 @@ function SkillsMesh({ visibleRef, reducedMotion, isMobile }: SceneRenderArgs) {
   return (
     <group ref={groupRef} position={[0, 0, -1]}>
       <ambientLight intensity={0.4} />
-      <pointLight position={[3, 3, 4]} intensity={0.9} color="#6B9071" />
+      <pointLight position={[3, 3, 4]} intensity={0.9} color="#3F6B46" />
       {nodes.map((def, i) => (
         <mesh key={i} ref={(el) => { nodeRefs.current[i] = el }} position={def.basePos}>
           <icosahedronGeometry args={[def.size, 0]} />
@@ -84,7 +84,7 @@ function SkillsMesh({ visibleRef, reducedMotion, isMobile }: SceneRenderArgs) {
         </mesh>
       ))}
       <lineSegments ref={lineRef} geometry={lineGeometry}>
-        <lineBasicMaterial color="#6B9071" transparent opacity={0.18} />
+        <lineBasicMaterial color="#3F6B46" transparent opacity={0.18} />
       </lineSegments>
     </group>
   )
