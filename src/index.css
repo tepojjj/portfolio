@@ -2,26 +2,26 @@
 
 @theme {
   /* Surfaces */
-  --color-canvas: #0a0e12;
-  --color-surface: #10151b;
-  --color-surface-raised: #161d26;
-  --color-border: #232d3a;
-  --color-border-soft: #1a222c;
+  --color-canvas: #0f2a1d;
+  --color-surface: #142e20;
+  --color-surface-raised: #1a3524;
+  --color-border: #375534;
+  --color-border-soft: #24402c;
 
   /* Text */
-  --color-text-high: #edf1f5;
-  --color-text-mid: #9caab8;
-  --color-text-low: #5c6875;
+  --color-text-high: #e3eed4;
+  --color-text-mid: #aec3b0;
+  --color-text-low: #6b9071;
 
   /* Accents */
-  --color-amber: #e3a857;
-  --color-amber-soft: #e3a85733;
-  --color-teal: #3ed9c4;
-  --color-teal-soft: #3ed9c433;
+  --color-amber: #AEC3B0;
+  --color-amber-soft: #AEC3B033;
+  --color-teal: #6B9071;
+  --color-teal-soft: #6B907133;
 
   /* Status (reused inventory taxonomy: Keep / Watch / Reduce / Remove) */
-  --color-status-keep: #3ed9c4;
-  --color-status-watch: #e3a857;
+  --color-status-keep: #6B9071;
+  --color-status-watch: #AEC3B0;
   --color-status-reduce: #e8834f;
   --color-status-remove: #e0555a;
 

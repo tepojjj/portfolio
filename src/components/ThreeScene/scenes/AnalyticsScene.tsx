@@ -25,7 +25,7 @@ function AnalyticsMesh({ visibleRef, reducedMotion, isMobile }: SceneRenderArgs)
       baseHeight: 0.4 + Math.random() * 1.1,
       speed: 0.5 + Math.random() * 0.6,
       offset: Math.random() * Math.PI * 2,
-      color: i % 3 === 0 ? '#e3a857' : '#3ed9c4',
+      color: i % 3 === 0 ? '#AEC3B0' : '#6B9071',
     }))
   }, [isMobile])
 
@@ -50,7 +50,7 @@ function AnalyticsMesh({ visibleRef, reducedMotion, isMobile }: SceneRenderArgs)
   return (
     <group ref={groupRef} position={[0, -0.8, -2]} rotation={[0.15, 0, 0]}>
       <ambientLight intensity={0.4} />
-      <pointLight position={[3, 4, 4]} intensity={0.9} color="#3ed9c4" />
+      <pointLight position={[3, 4, 4]} intensity={0.9} color="#6B9071" />
       {bars.map((def, i) => (
         <mesh key={i} ref={(el) => { barRefs.current[i] = el }} position={[def.x, 0.5, def.z]}>
           <boxGeometry args={[0.22, 1, 0.22]} />

@@ -17,10 +17,10 @@ interface NodeDef {
 }
 
 const NODE_DEFS: NodeDef[] = [
-  { radius: 2.6, speed: 0.18, offset: 0, tilt: 0.3, size: 0.09, color: '#e3a857' },
-  { radius: 3.1, speed: -0.14, offset: 2.1, tilt: -0.5, size: 0.07, color: '#3ed9c4' },
-  { radius: 2.3, speed: 0.22, offset: 4.2, tilt: 0.6, size: 0.06, color: '#3ed9c4' },
-  { radius: 3.4, speed: -0.1, offset: 1.2, tilt: -0.2, size: 0.08, color: '#e3a857' },
+  { radius: 2.6, speed: 0.18, offset: 0, tilt: 0.3, size: 0.09, color: '#AEC3B0' },
+  { radius: 3.1, speed: -0.14, offset: 2.1, tilt: -0.5, size: 0.07, color: '#6B9071' },
+  { radius: 2.3, speed: 0.22, offset: 4.2, tilt: 0.6, size: 0.06, color: '#6B9071' },
+  { radius: 3.4, speed: -0.1, offset: 1.2, tilt: -0.2, size: 0.08, color: '#AEC3B0' },
   { radius: 2.8, speed: 0.16, offset: 5.4, tilt: 0.15, size: 0.05, color: '#edf1f5' },
 ]
 

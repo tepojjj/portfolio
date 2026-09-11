@@ -19,7 +19,7 @@ export function Portfolio() {
   useEffect(() => {
     console.log(
       '%cLooking under the hood?',
-      'font-family: monospace; font-size: 14px; color: #3ed9c4;'
+      'font-family: monospace; font-size: 14px; color: #6B9071;'
     )
     console.log(
       '%cThis site is React + TypeScript + Three.js + GSAP. Let\'s talk: hello@jet-dev.com',

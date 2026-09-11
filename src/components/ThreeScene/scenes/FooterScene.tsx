@@ -27,7 +27,7 @@ function FooterMesh({ visibleRef, reducedMotion, isMobile }: SceneRenderArgs) {
     <Points ref={pointsRef} positions={positions} stride={3} frustumCulled>
       <PointMaterial
         transparent
-        color="#3ed9c4"
+        color="#6B9071"
         size={0.02}
         sizeAttenuation
         depthWrite={false}
