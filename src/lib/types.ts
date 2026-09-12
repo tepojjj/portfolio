@@ -110,9 +110,10 @@ export interface ResumeEducationItem {
 }
 
 /** Row shape as stored in the Supabase `site_resume` table (single row, id = 1).
- * Deliberately self-contained (own contact fields, own experience list) so the
- * downloadable/viewable resume can diverge from the live site's copy — e.g. a
- * tighter ATS-friendly summary vs. the hero's longer pitch. */
+ * Contact/summary/skills/education are self-contained here, but the experience
+ * section is intentionally NOT stored on this row — it's synced live from the
+ * `experience` table (the same one the Experience tab edits) so a role never
+ * needs to be entered twice. See utils/experienceToResume.ts. */
 export interface DbSiteResume {
   id: number
   full_name: string
@@ -123,7 +124,6 @@ export interface DbSiteResume {
   linkedin: string
   summary: string
   skills: string[]
-  experience: ResumeExperienceItem[]
   education: ResumeEducationItem[]
   updated_at: string
 }
@@ -140,6 +140,5 @@ export const emptyResumeDraft: ResumeDraft = {
   linkedin: '',
   summary: '',
   skills: [],
-  experience: [],
   education: [],
 }

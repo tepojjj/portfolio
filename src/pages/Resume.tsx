@@ -1,12 +1,23 @@
 import { Link } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import { useSiteResume } from '@/hooks/useSiteResume'
+import { useExperience } from '@/hooks/useExperience'
+import { experienceToResumeItems } from '@/utils/experienceToResume'
+import profileImg from '@/assets/profile.png'
 
 /** Plain, single-column resume view — deliberately styled to read the same
  * way it would parse for an ATS: standard headings, no multi-column layout,
- * no tables or decorative graphics. Content comes from the admin panel. */
+ * no tables or decorative graphics. Contact/summary/skills/education come
+ * from the admin panel's Resume tab; Experience is synced live from the
+ * Experience tab so it never has to be entered twice.
+ *
+ * The profile photo shown here is for this page only — it's left out of the
+ * generated PDF on purpose, since photos are one of the things that commonly
+ * cause applicant tracking systems to mis-parse or reject a resume. */
 export function Resume() {
   const { resume } = useSiteResume()
+  const { experience } = useExperience()
+  const resumeExperience = experienceToResumeItems(experience)
 
   const contactLine = [resume.email, resume.phone, resume.location, resume.linkedin]
     .filter(Boolean)
@@ -31,9 +42,18 @@ export function Resume() {
         </div>
 
         <div className="bg-surface border border-border p-8 md:p-12">
-          <h1 className="font-display text-3xl md:text-4xl text-text-high">{resume.full_name}</h1>
-          {resume.title && <p className="mt-1 text-text-mid">{resume.title}</p>}
-          {contactLine && <p className="mt-3 font-mono text-xs text-text-low">{contactLine}</p>}
+          <div className="flex flex-col-reverse sm:flex-row sm:items-start sm:justify-between gap-6">
+            <div>
+              <h1 className="font-display text-3xl md:text-4xl text-text-high">{resume.full_name}</h1>
+              {resume.title && <p className="mt-1 text-text-mid">{resume.title}</p>}
+              {contactLine && <p className="mt-3 font-mono text-xs text-text-low">{contactLine}</p>}
+            </div>
+            <img
+              src={profileImg}
+              alt={resume.full_name}
+              className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border border-border shrink-0"
+            />
+          </div>
 
           {resume.summary && (
             <section className="mt-8">
@@ -53,13 +73,13 @@ export function Resume() {
             </section>
           )}
 
-          {resume.experience.length > 0 && (
+          {resumeExperience.length > 0 && (
             <section className="mt-8">
               <h2 className="font-mono text-xs uppercase tracking-wider text-teal border-b border-border-soft pb-2 mb-3">
                 Experience
               </h2>
               <div className="space-y-6">
-                {resume.experience.map((entry, index) => (
+                {resumeExperience.map((entry, index) => (
                   <div key={index}>
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                       <h3 className="text-text-high font-medium">{entry.position}</h3>

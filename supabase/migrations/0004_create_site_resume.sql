@@ -1,6 +1,9 @@
 -- Site resume (single row) + Row Level Security
 -- Powers both the "View Resume" page at /resume and the admin panel's
 -- Resume tab, where the content is edited and a PDF can be generated.
+-- Note: the `experience` column seeded below is removed by migration 0005,
+-- which switches the resume's Experience section to sync live from the
+-- `experience` table instead. Run migrations in order.
 -- Run this in the Supabase SQL Editor (Project > SQL Editor > New query),
 -- or via `supabase db push` if you use the Supabase CLI.
 -- Requires 0001_create_projects.sql to have run first (reuses the
@@ -57,7 +60,14 @@ values (
       ]
     }
   ]'::jsonb,
-  '[]'::jsonb
+  '[
+    {
+      "degree": "Add your degree",
+      "school": "Add your school",
+      "date": "Add dates",
+      "details": "Add your field of study, honors, or relevant coursework — or remove this entry if not applicable."
+    }
+  ]'::jsonb
 )
 on conflict (id) do nothing;
 

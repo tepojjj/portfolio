@@ -22,20 +22,12 @@ export const fallbackResume: ResumeDraft = {
     'Data Analysis',
     'Process Automation',
   ],
-  experience: [
+  education: [
     {
-      position: 'Web Developer & Operations Systems Lead',
-      company: 'UBEST',
-      date: 'Present',
-      bullets: [
-        'Manage inventory data, store data, and internal tooling across approximately 65 stores',
-        'Build and maintain React web apps and backend APIs for warehouse and retail operations',
-        'Design formulas and automation inside the Lark/Feishu Base ecosystem',
-        'Reconcile inventory data between Lark Base and Excel master files',
-        'Automated floor and zone assignment for approximately 62,000 product rows across 64 stores',
-        'Replaced manual reconciliation and reporting workflows with self-serve tools',
-      ],
+      degree: 'Add your degree',
+      school: 'Add your school',
+      date: 'Add dates',
+      details: 'Add your field of study, honors, or relevant coursework — or remove this entry if not applicable.',
     },
   ],
-  education: [],
 }

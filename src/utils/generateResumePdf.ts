@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf'
-import type { ResumeDraft } from '@/lib/types'
+import type { ResumeDraft, ResumeExperienceItem } from '@/lib/types'
 
 const PAGE_WIDTH = 612 // US Letter, points
 const PAGE_HEIGHT = 792
@@ -12,7 +12,7 @@ const CONTENT_WIDTH = PAGE_WIDTH - MARGIN * 2
  * content throughout. That combination is what lets applicant tracking
  * systems parse a PDF resume reliably instead of dropping fields.
  */
-export function generateResumePdf(resume: ResumeDraft): void {
+export function generateResumePdf(resume: ResumeDraft, experience: ResumeExperienceItem[]): void {
   const doc = new jsPDF({ unit: 'pt', format: 'letter' })
   let y = MARGIN
 
@@ -78,10 +78,10 @@ export function generateResumePdf(resume: ResumeDraft): void {
     addWrapped(resume.skills.join(', '), 10.5, 'normal', 14)
   }
 
-  // Experience
-  if (resume.experience.length > 0) {
+  // Experience — synced live from the Experience tab/table, not edited here.
+  if (experience.length > 0) {
     addSectionHeading('Experience')
-    resume.experience.forEach((entry, index) => {
+    experience.forEach((entry, index) => {
       ensureSpace(16)
       doc.setFont('helvetica', 'bold')
       doc.setFontSize(11)
@@ -111,7 +111,7 @@ export function generateResumePdf(resume: ResumeDraft): void {
         })
       })
 
-      if (index < resume.experience.length - 1) y += 8
+      if (index < experience.length - 1) y += 8
     })
   }
 

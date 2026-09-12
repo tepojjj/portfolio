@@ -1,21 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Save, Download, Plus, Trash2 } from 'lucide-react'
+import { Save, Download, Plus, Trash2, ArrowRight } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { emptyResumeDraft, type DbSiteResume, type ResumeDraft } from '@/lib/types'
 import { generateResumePdf } from '@/utils/generateResumePdf'
+import { useExperience } from '@/hooks/useExperience'
+import { experienceToResumeItems } from '@/utils/experienceToResume'
 
 const fieldClass =
   'w-full bg-surface-raised border border-border px-3 py-2.5 text-sm text-text-high outline-none focus:border-teal transition-colors'
 const labelClass = 'block font-mono text-xs text-text-low mb-2'
 
-// Editable rows keep bullets/details as a single textarea string; converted
-// to arrays only when saving/generating the PDF.
-interface ExperienceRow {
-  position: string
-  company: string
-  date: string
-  bulletsText: string
-}
 interface EducationRow {
   degree: string
   school: string
@@ -23,36 +17,23 @@ interface EducationRow {
   details: string
 }
 
-function toExperienceRows(experience: ResumeDraft['experience']): ExperienceRow[] {
-  return experience.map((e) => ({
-    position: e.position,
-    company: e.company,
-    date: e.date,
-    bulletsText: e.bullets.join('\n'),
-  }))
+interface ResumeFormProps {
+  onManageExperience?: () => void
 }
 
-function fromExperienceRows(rows: ExperienceRow[]): ResumeDraft['experience'] {
-  return rows.map((r) => ({
-    position: r.position,
-    company: r.company,
-    date: r.date,
-    bullets: r.bulletsText
-      .split('\n')
-      .map((b) => b.trim())
-      .filter(Boolean),
-  }))
-}
-
-export function ResumeForm() {
+export function ResumeForm({ onManageExperience }: ResumeFormProps) {
   const [draft, setDraft] = useState<ResumeDraft>(emptyResumeDraft)
   const [skillsInput, setSkillsInput] = useState('')
-  const [experienceRows, setExperienceRows] = useState<ExperienceRow[]>([])
   const [educationRows, setEducationRows] = useState<EducationRow[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [saved, setSaved] = useState(false)
+
+  // Experience is not edited here — it's synced live from the Experience tab
+  // (the `experience` table), so a role never needs to be entered twice.
+  const { experience } = useExperience()
+  const resumeExperience = experienceToResumeItems(experience)
 
   useEffect(() => {
     let cancelled = false
@@ -78,12 +59,10 @@ export function ResumeForm() {
           linkedin: row.linkedin,
           summary: row.summary,
           skills: row.skills,
-          experience: row.experience,
           education: row.education,
         }
         setDraft(nextDraft)
         setSkillsInput(row.skills.join(', '))
-        setExperienceRows(toExperienceRows(row.experience))
         setEducationRows(row.education)
       }
       setLoading(false)
@@ -106,7 +85,6 @@ export function ResumeForm() {
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean),
-    experience: fromExperienceRows(experienceRows),
     education: educationRows,
   })
 
@@ -125,15 +103,8 @@ export function ResumeForm() {
   }
 
   const handleDownloadPdf = () => {
-    generateResumePdf(buildFinalDraft())
+    generateResumePdf(buildFinalDraft(), resumeExperience)
   }
-
-  const addExperienceRow = () =>
-    setExperienceRows((rows) => [...rows, { position: '', company: '', date: '', bulletsText: '' }])
-  const updateExperienceRow = (index: number, patch: Partial<ExperienceRow>) =>
-    setExperienceRows((rows) => rows.map((r, i) => (i === index ? { ...r, ...patch } : r)))
-  const removeExperienceRow = (index: number) =>
-    setExperienceRows((rows) => rows.filter((_, i) => i !== index))
 
   const addEducationRow = () =>
     setEducationRows((rows) => [...rows, { degree: '', school: '', date: '', details: '' }])
@@ -213,72 +184,47 @@ export function ResumeForm() {
 
       <div>
         <div className="flex items-center justify-between mb-3">
-          <p className="font-mono text-xs uppercase tracking-wider text-text-low">Experience</p>
-          <button
-            type="button"
-            onClick={addExperienceRow}
-            className="inline-flex items-center gap-1.5 text-xs text-teal hover:text-teal/80 transition-colors"
-          >
-            <Plus size={14} /> Add role
-          </button>
+          <div>
+            <p className="font-mono text-xs uppercase tracking-wider text-text-low">Experience</p>
+            <p className="text-text-low text-xs mt-1">
+              Synced from the Experience tab — edit roles there and they'll show up here automatically.
+            </p>
+          </div>
+          {onManageExperience && (
+            <button
+              type="button"
+              onClick={onManageExperience}
+              className="inline-flex items-center gap-1.5 text-xs text-teal hover:text-teal/80 transition-colors shrink-0"
+            >
+              Manage roles <ArrowRight size={14} />
+            </button>
+          )}
         </div>
         <div className="space-y-4">
-          {experienceRows.length === 0 && (
-            <p className="text-text-low text-sm italic">No roles yet — add one above.</p>
+          {resumeExperience.length === 0 ? (
+            <p className="text-text-low text-sm italic">
+              No roles yet — add one from the Experience tab.
+            </p>
+          ) : (
+            resumeExperience.map((entry, index) => (
+              <div key={index} className="border border-border-soft p-4">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <p className="text-text-high font-medium">{entry.position}</p>
+                  <span className="font-mono text-xs text-text-low">{entry.date}</span>
+                </div>
+                {entry.company && <p className="text-sm text-text-mid">{entry.company}</p>}
+                {entry.bullets.length > 0 && (
+                  <ul className="mt-2 space-y-1">
+                    {entry.bullets.map((bullet, i) => (
+                      <li key={i} className="text-sm text-text-mid flex gap-2">
+                        <span className="text-text-low">-</span> {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))
           )}
-          {experienceRows.map((row, index) => (
-            <div key={index} className="border border-border-soft p-4 space-y-3">
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => removeExperienceRow(index)}
-                  className="text-text-low hover:text-status-remove transition-colors"
-                  aria-label="Remove role"
-                >
-                  <Trash2 size={15} />
-                </button>
-              </div>
-              <div className="grid sm:grid-cols-2 gap-3">
-                <input
-                  className={fieldClass}
-                  placeholder="Position"
-                  value={row.position}
-                  onChange={(e) => {
-                    updateExperienceRow(index, { position: e.target.value })
-                    setSaved(false)
-                  }}
-                />
-                <input
-                  className={fieldClass}
-                  placeholder="Company"
-                  value={row.company}
-                  onChange={(e) => {
-                    updateExperienceRow(index, { company: e.target.value })
-                    setSaved(false)
-                  }}
-                />
-              </div>
-              <input
-                className={fieldClass}
-                placeholder="Date (e.g. Present, 2022 - 2024)"
-                value={row.date}
-                onChange={(e) => {
-                  updateExperienceRow(index, { date: e.target.value })
-                  setSaved(false)
-                }}
-              />
-              <textarea
-                rows={4}
-                className={fieldClass}
-                placeholder="Bullets, one per line"
-                value={row.bulletsText}
-                onChange={(e) => {
-                  updateExperienceRow(index, { bulletsText: e.target.value })
-                  setSaved(false)
-                }}
-              />
-            </div>
-          ))}
         </div>
       </div>
 

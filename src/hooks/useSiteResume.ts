@@ -13,7 +13,6 @@ function toResumeDraft(row: DbSiteResume): ResumeDraft {
     linkedin: row.linkedin,
     summary: row.summary,
     skills: row.skills,
-    experience: row.experience,
     education: row.education,
   }
 }

@@ -161,7 +161,7 @@ export function AdminDashboard() {
 
         {tab === 'contact' && <ContactInfoForm />}
 
-        {tab === 'resume' && <ResumeForm />}
+        {tab === 'resume' && <ResumeForm onManageExperience={() => setTab('experience')} />}
 
         {tab === 'experience' && experienceView.mode === 'list' && (
           <>
