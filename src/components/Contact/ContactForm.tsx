@@ -35,6 +35,7 @@ export function ContactForm() {
   const [values, setValues] = useState<FormState>(initialState)
   const [errors, setErrors] = useState<Partial<FormState>>({})
   const [status, setStatus] = useState<Status>('idle')
+  const [errorDetail, setErrorDetail] = useState<string | null>(null)
 
   const handleChange = (field: keyof FormState) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -62,7 +63,10 @@ export function ContactForm() {
       if (insertError) throw new Error(insertError.message)
       setStatus('success')
       setValues(initialState)
-    } catch {
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Contact form submit failed:', err)
+      setErrorDetail(err instanceof Error ? err.message : 'Unknown error')
       setStatus('error')
     }
   }
@@ -122,7 +126,10 @@ export function ContactForm() {
 
       {status === 'error' && (
         <div className="flex items-center gap-2 text-status-remove text-sm">
-          <AlertCircle size={16} /> Something went wrong sending your message. Please try again.
+          <AlertCircle size={16} />
+          {errorDetail
+            ? `Couldn't send your message: ${errorDetail}`
+            : 'Something went wrong sending your message. Please try again.'}
         </div>
       )}
 
