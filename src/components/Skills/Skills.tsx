@@ -10,7 +10,7 @@ const SkillsScene = lazy(() =>
 )
 
 const ICONS = [Layers, Server, LineChart, Workflow, Database]
-const ACCENTS = ['#3F6B46', '#7C9471', '#3F6B46', '#7C9471', '#3F6B46']
+const ACCENTS = ['#6EE7A0', '#C7E38A', '#6EE7A0', '#C7E38A', '#6EE7A0']
 
 export function Skills() {
   return (

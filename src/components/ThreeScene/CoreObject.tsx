@@ -34,14 +34,14 @@ export function CoreObject({ visibleRef, reducedMotion }: CoreObjectProps) {
     <group>
       <mesh ref={glowRef}>
         <icosahedronGeometry args={[1.4, 1]} />
-        <meshBasicMaterial color="#3F6B46" transparent opacity={0.05} />
+        <meshBasicMaterial color="#6EE7A0" transparent opacity={0.05} />
       </mesh>
       <mesh ref={wireRef}>
         <icosahedronGeometry args={[1.4, 1]} />
         <meshStandardMaterial
-          color="#3F6B46"
+          color="#6EE7A0"
           wireframe
-          emissive="#3F6B46"
+          emissive="#6EE7A0"
           emissiveIntensity={0.4}
           transparent
           opacity={0.85}

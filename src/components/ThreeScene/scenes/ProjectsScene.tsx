@@ -28,7 +28,7 @@ function ProjectsMesh({ visibleRef, mouseRef, reducedMotion, isMobile }: SceneRe
       speed: 0.15 + Math.random() * 0.2,
       offset: Math.random() * Math.PI * 2,
       size: 0.5 + Math.random() * 0.5,
-      color: i % 2 === 0 ? '#3F6B46' : '#7C9471',
+      color: i % 2 === 0 ? '#6EE7A0' : '#C7E38A',
     }))
   }, [isMobile])
 
@@ -54,7 +54,7 @@ function ProjectsMesh({ visibleRef, mouseRef, reducedMotion, isMobile }: SceneRe
   return (
     <group ref={groupRef}>
       <ambientLight intensity={0.4} />
-      <pointLight position={[4, 3, 5]} intensity={0.8} color="#3F6B46" />
+      <pointLight position={[4, 3, 5]} intensity={0.8} color="#6EE7A0" />
       {frames.map((def, i) => (
         <mesh
           key={i}

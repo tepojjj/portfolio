@@ -39,19 +39,19 @@ function ContactMesh({ visibleRef, mouseRef, reducedMotion }: SceneRenderArgs) {
   return (
     <group ref={groupRef} position={[-1.8, 0, -1.5]}>
       <ambientLight intensity={0.35} />
-      <pointLight position={[3, 2, 4]} intensity={1.1} color="#3F6B46" />
+      <pointLight position={[3, 2, 4]} intensity={1.1} color="#6EE7A0" />
 
       <mesh ref={coreRef}>
         <sphereGeometry args={[0.4, 24, 24]} />
-        <meshStandardMaterial color="#3F6B46" emissive="#3F6B46" emissiveIntensity={0.5} transparent opacity={0.5} />
+        <meshStandardMaterial color="#6EE7A0" emissive="#6EE7A0" emissiveIntensity={0.5} transparent opacity={0.5} />
       </mesh>
       <mesh ref={ring1Ref} rotation={[1.1, 0, 0]}>
         <torusGeometry args={[1.1, 0.015, 16, 96]} />
-        <meshBasicMaterial color="#3F6B46" transparent opacity={0.4} />
+        <meshBasicMaterial color="#6EE7A0" transparent opacity={0.4} />
       </mesh>
       <mesh ref={ring2Ref} rotation={[1.3, 0, 0]}>
         <torusGeometry args={[1.4, 0.012, 16, 96]} />
-        <meshBasicMaterial color="#7C9471" transparent opacity={0.3} />
+        <meshBasicMaterial color="#C7E38A" transparent opacity={0.3} />
       </mesh>
     </group>
   )

@@ -13,8 +13,8 @@ export const salesTrend = [
 ]
 
 export const inventoryStatus = [
-  { status: 'Keep', count: 41230, color: '#3F6B46' },
-  { status: 'Watch', count: 12480, color: '#7C9471' },
+  { status: 'Keep', count: 41230, color: '#6EE7A0' },
+  { status: 'Watch', count: 12480, color: '#C7E38A' },
   { status: 'Reduce', count: 6120, color: '#e8834f' },
   { status: 'Remove', count: 2170, color: '#e0555a' },
 ]

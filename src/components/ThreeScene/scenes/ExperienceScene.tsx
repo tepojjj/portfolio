@@ -37,7 +37,7 @@ function ExperienceMesh({ visibleRef, reducedMotion, isMobile }: SceneRenderArgs
       <Points ref={pointsRef} positions={positions} stride={3} frustumCulled>
         <PointMaterial
           transparent
-          color="#3F6B46"
+          color="#6EE7A0"
           size={0.035}
           sizeAttenuation
           depthWrite={false}

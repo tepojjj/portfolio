@@ -26,14 +26,14 @@ function AboutMesh({ visibleRef, mouseRef, reducedMotion }: SceneRenderArgs) {
   return (
     <group ref={groupRef} position={[1.6, 0, -1]}>
       <ambientLight intensity={0.35} />
-      <pointLight position={[4, 3, 4]} intensity={1} color="#3F6B46" />
-      <pointLight position={[-3, -2, -3]} intensity={0.5} color="#7C9471" />
+      <pointLight position={[4, 3, 4]} intensity={1} color="#6EE7A0" />
+      <pointLight position={[-3, -2, -3]} intensity={0.5} color="#C7E38A" />
       <mesh ref={knotRef}>
         <torusKnotGeometry args={[1.05, 0.32, 128, 16, 2, 3]} />
         <meshStandardMaterial
-          color="#3F6B46"
+          color="#6EE7A0"
           wireframe
-          emissive="#3F6B46"
+          emissive="#6EE7A0"
           emissiveIntensity={0.35}
           transparent
           opacity={0.5}
