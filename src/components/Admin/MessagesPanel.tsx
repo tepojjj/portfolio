@@ -13,6 +13,25 @@ function formatDate(iso: string) {
   })
 }
 
+function gmailComposeUrl(msg: DbMessage) {
+  const body = `Hi ${msg.name},\n\n\n\n---\nOn ${formatDate(msg.created_at)}, you wrote:\n${msg.message}`
+  const params = new URLSearchParams({
+    view: 'cm',
+    fs: '1',
+    to: msg.email,
+    su: `Re: ${msg.subject || 'your message'}`,
+    body,
+  })
+  return `https://mail.google.com/mail/?${params.toString()}`
+}
+
+function mailtoUrl(msg: DbMessage) {
+  const params = new URLSearchParams({
+    subject: `Re: ${msg.subject || 'your message'}`,
+  })
+  return `mailto:${msg.email}?${params.toString()}`
+}
+
 interface MessagesPanelProps {
   onChange?: () => void
 }
@@ -119,12 +138,22 @@ export function MessagesPanel({ onChange }: MessagesPanelProps) {
               {isOpen && (
                 <div className="px-4 pb-4 pt-1 border-t border-border-soft">
                   <p className="text-sm text-text-mid whitespace-pre-wrap leading-relaxed">{msg.message}</p>
-                  <a
-                    href={`mailto:${msg.email}?subject=${encodeURIComponent('Re: ' + (msg.subject || 'your message'))}`}
-                    className="inline-block mt-3 text-sm text-teal hover:underline"
-                  >
-                    Reply by email →
-                  </a>
+                  <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <a
+                      href={gmailComposeUrl(msg)}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="inline-flex items-center gap-1.5 text-sm text-teal hover:underline"
+                    >
+                      Reply in Gmail →
+                    </a>
+                    <a
+                      href={mailtoUrl(msg)}
+                      className="inline-flex items-center gap-1.5 text-xs text-text-low hover:text-text-mid transition-colors"
+                    >
+                      or use your default mail app
+                    </a>
+                  </div>
                 </div>
               )}
             </div>

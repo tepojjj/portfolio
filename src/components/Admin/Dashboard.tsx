@@ -131,7 +131,7 @@ export function AdminDashboard() {
   return (
     <div className="min-h-screen bg-canvas px-6 py-10 md:px-10">
       <div className="mx-auto max-w-4xl">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
           <div>
             <h1 className="font-display text-2xl md:text-3xl text-text-high">Site admin</h1>
             <p className="text-text-mid text-sm mt-1">
@@ -140,13 +140,13 @@ export function AdminDashboard() {
           </div>
           <button
             onClick={handleSignOut}
-            className="inline-flex items-center gap-2 px-4 py-2 border border-border text-sm text-text-mid hover:text-text-high hover:border-teal transition-colors shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2 border border-border text-sm text-text-mid hover:text-text-high hover:border-teal transition-colors shrink-0 self-start sm:self-auto"
           >
             <LogOut size={15} /> Sign out
           </button>
         </div>
 
-        <div className="flex items-center gap-1 mb-8 border-b border-border-soft">
+        <div className="flex items-center gap-1 mb-8 border-b border-border-soft overflow-x-auto no-scrollbar">
           {(
             [
               { id: 'projects', label: 'Projects' },
@@ -159,7 +159,7 @@ export function AdminDashboard() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`px-4 py-2.5 text-sm border-b-2 -mb-px transition-colors inline-flex items-center gap-2 ${
+              className={`px-4 py-2.5 text-sm border-b-2 -mb-px transition-colors inline-flex items-center gap-2 whitespace-nowrap shrink-0 ${
                 tab === t.id
                   ? 'text-text-high border-teal'
                   : 'text-text-mid border-transparent hover:text-text-high'
