@@ -13,7 +13,7 @@ export function Hero() {
   const mouse = useMousePosition()
 
   const handleResume = () => {
-    window.open('/resume.pdf', '_blank')
+    window.open('/resume', '_blank')
   }
 
   return (
@@ -83,7 +83,7 @@ export function Hero() {
               Explore My Work
             </MagneticButton>
             <MagneticButton variant="ghost" onClick={handleResume}>
-              Download Resume
+              View Resume
             </MagneticButton>
             <MagneticButton
               variant="ghost"

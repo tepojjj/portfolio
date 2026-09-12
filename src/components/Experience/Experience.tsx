@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Section, SectionHeading } from '@/components/shared/Section'
-import { experience } from '@/data/experience'
+import { useExperience } from '@/hooks/useExperience'
 import { Tag } from '@/components/shared/StatusTag'
 import { usePrefersReducedMotion } from '@/hooks/useMediaQuery'
 
@@ -15,6 +15,7 @@ gsap.registerPlugin(ScrollTrigger)
 export function Experience() {
   const containerRef = useRef<HTMLDivElement>(null)
   const reducedMotion = usePrefersReducedMotion()
+  const { experience } = useExperience()
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -56,7 +57,7 @@ export function Experience() {
     }, containerRef)
 
     return () => ctx.revert()
-  }, [reducedMotion])
+  }, [reducedMotion, experience])
 
   return (
     <Section
@@ -70,11 +71,7 @@ export function Experience() {
       <div className="absolute inset-0 bg-gradient-to-b from-surface/60 via-surface/10 to-surface/70 pointer-events-none" />
 
       <div className="relative z-10">
-      <SectionHeading
-        index="04 / Experience"
-        title="Where the work has happened."
-        description="Add earlier roles to this timeline as your history grows."
-      />
+      <SectionHeading index="04 / Experience" title="Where the work has happened." />
 
       <div ref={containerRef} className="relative pl-8 md:pl-10">
         <div className="absolute left-[3px] md:left-[3px] top-1 bottom-1 w-px bg-border">

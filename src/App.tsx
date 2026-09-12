@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from '@/lib/auth'
 import { Portfolio } from '@/pages/Portfolio'
+import { Resume } from '@/pages/Resume'
 import { AdminLogin } from '@/components/Admin/Login'
 import { AdminDashboard } from '@/components/Admin/Dashboard'
 import { ProtectedRoute } from '@/components/Admin/ProtectedRoute'
@@ -10,6 +11,7 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route path="/" element={<Portfolio />} />
+        <Route path="/resume" element={<Resume />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route
           path="/admin/dashboard"
