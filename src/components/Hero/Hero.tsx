@@ -46,7 +46,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-mono text-sm text-teal mb-5"
           >
-            Hello, I'm Jopet Pallarcon
+            Jopet Pallarcon
           </motion.p>
 
           <motion.h1
