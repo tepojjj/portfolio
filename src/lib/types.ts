@@ -94,6 +94,18 @@ export const emptyContactDraft: ContactDraft = {
   linkedin: '',
 }
 
+/** Row shape as stored in the Supabase `messages` table — one row per contact
+ * form submission from a site visitor. */
+export interface DbMessage {
+  id: string // uuid, primary key
+  name: string
+  email: string
+  subject: string
+  message: string
+  read: boolean
+  created_at: string
+}
+
 /** One role inside the resume's experience list. Kept as plain jsonb rather
  * than a separate table since the resume is a single self-contained document. */
 export interface ResumeExperienceItem {

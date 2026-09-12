@@ -7,13 +7,14 @@ import { ProjectForm } from './ProjectForm'
 import { ContactInfoForm } from './ContactInfoForm'
 import { ExperienceForm } from './ExperienceForm'
 import { ResumeForm } from './ResumeForm'
+import { MessagesPanel } from './MessagesPanel'
 
 type ViewState = { mode: 'list' } | { mode: 'create' } | { mode: 'edit'; project: DbProject }
 type ExperienceViewState =
   | { mode: 'list' }
   | { mode: 'create' }
   | { mode: 'edit'; entry: DbExperience }
-type Tab = 'projects' | 'experience' | 'resume' | 'contact'
+type Tab = 'projects' | 'experience' | 'resume' | 'messages' | 'contact'
 
 export function AdminDashboard() {
   const [tab, setTab] = useState<Tab>('projects')
@@ -26,6 +27,8 @@ export function AdminDashboard() {
   const [experienceLoading, setExperienceLoading] = useState(true)
   const [experienceError, setExperienceError] = useState<string | null>(null)
   const [experienceView, setExperienceView] = useState<ExperienceViewState>({ mode: 'list' })
+
+  const [unreadMessages, setUnreadMessages] = useState(0)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -60,6 +63,18 @@ export function AdminDashboard() {
   useEffect(() => {
     loadExperience()
   }, [loadExperience])
+
+  const loadUnreadCount = useCallback(async () => {
+    const { count } = await supabase
+      .from('messages')
+      .select('*', { count: 'exact', head: true })
+      .eq('read', false)
+    setUnreadMessages(count ?? 0)
+  }, [])
+
+  useEffect(() => {
+    loadUnreadCount()
+  }, [loadUnreadCount])
 
   const handleExperienceCreate = async (draft: ExperienceDraft) => {
     const { error: insertError } = await supabase.from('experience').insert(draft)
@@ -137,19 +152,25 @@ export function AdminDashboard() {
               { id: 'projects', label: 'Projects' },
               { id: 'experience', label: 'Experience' },
               { id: 'resume', label: 'Resume' },
+              { id: 'messages', label: 'Messages' },
               { id: 'contact', label: 'Contact info' },
             ] as const
           ).map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`px-4 py-2.5 text-sm border-b-2 -mb-px transition-colors ${
+              className={`px-4 py-2.5 text-sm border-b-2 -mb-px transition-colors inline-flex items-center gap-2 ${
                 tab === t.id
                   ? 'text-text-high border-teal'
                   : 'text-text-mid border-transparent hover:text-text-high'
               }`}
             >
               {t.label}
+              {t.id === 'messages' && unreadMessages > 0 && (
+                <span className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-teal text-canvas text-[10px] font-medium">
+                  {unreadMessages}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -162,6 +183,8 @@ export function AdminDashboard() {
         {tab === 'contact' && <ContactInfoForm />}
 
         {tab === 'resume' && <ResumeForm onManageExperience={() => setTab('experience')} />}
+
+        {tab === 'messages' && <MessagesPanel onChange={loadUnreadCount} />}
 
         {tab === 'experience' && experienceView.mode === 'list' && (
           <>

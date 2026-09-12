@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
 import { MagneticButton } from '@/components/shared/MagneticButton'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 
 interface FormState {
   name: string
@@ -49,9 +50,16 @@ export function ContactForm() {
 
     setStatus('submitting')
     try {
-      // NOTE: this is a placeholder submit — wire this up to a real endpoint
-      // (Formspree, a serverless function, your own API) before going live.
-      await new Promise((resolve) => setTimeout(resolve, 900))
+      if (!isSupabaseConfigured) {
+        throw new Error('Supabase is not configured for this site yet.')
+      }
+      const { error: insertError } = await supabase.from('messages').insert({
+        name: values.name.trim(),
+        email: values.email.trim(),
+        subject: values.subject.trim(),
+        message: values.message.trim(),
+      })
+      if (insertError) throw new Error(insertError.message)
       setStatus('success')
       setValues(initialState)
     } catch {
