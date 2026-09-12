@@ -2,6 +2,7 @@ import { Code2, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
 import type { Project } from '@/data/projects'
 import { Tag } from '@/components/shared/StatusTag'
+import { hasRealImage, getProjectIcon } from '@/utils/projectVisual'
 
 interface ProjectCardProps {
   project: Project
@@ -11,6 +12,8 @@ interface ProjectCardProps {
 const accentColor = { teal: 'var(--color-teal)', amber: 'var(--color-amber)' }
 
 export function ProjectCard({ project, onOpen }: ProjectCardProps) {
+  const Icon = getProjectIcon(project)
+
   return (
     <motion.div layoutId={`project-${project.id}`} className="group relative">
       <button
@@ -18,24 +21,36 @@ export function ProjectCard({ project, onOpen }: ProjectCardProps) {
         data-cursor="interactive"
         className="w-full text-left bg-surface border border-border overflow-hidden relative transition-transform duration-300 ease-out hover:-translate-y-1"
       >
-        {/* Preview panel: abstract representation instead of a stock photo */}
+        {/* Preview panel: real screenshot when one's been added, otherwise a themed icon */}
         <div className="relative h-52 md:h-60 overflow-hidden border-b border-border">
-          <div
-            className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
-            style={{
-              background: `radial-gradient(circle at 30% 20%, ${accentColor[project.accent]}22 0%, transparent 60%), var(--color-surface-raised)`,
-            }}
-          />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span
-              className="font-display text-6xl md:text-7xl font-semibold opacity-20"
-              style={{ color: accentColor[project.accent] }}
-            >
-              {project.name.charAt(0)}
-            </span>
-          </div>
+          {hasRealImage(project.image) ? (
+            <img
+              src={project.image}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+          ) : (
+            <>
+              <div
+                className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+                style={{
+                  background: `radial-gradient(circle at 30% 20%, ${accentColor[project.accent]}22 0%, transparent 60%), var(--color-surface-raised)`,
+                }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Icon
+                  size={56}
+                  strokeWidth={1.5}
+                  className="opacity-25"
+                  style={{ color: accentColor[project.accent] }}
+                />
+              </div>
+            </>
+          )}
           <div className="absolute bottom-3 left-3">
-            <span className="font-mono text-[11px] text-text-low">{project.tagline}</span>
+            <span className="font-mono text-[11px] text-text-low bg-canvas/60 px-1.5 py-0.5">
+              {project.tagline}
+            </span>
           </div>
         </div>
 

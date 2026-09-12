@@ -4,6 +4,7 @@ import { X, Code2, ExternalLink } from 'lucide-react'
 import type { Project } from '@/data/projects'
 import { Tag } from '@/components/shared/StatusTag'
 import { normalizeUrl } from '@/utils/url'
+import { hasRealImage, getProjectIcon } from '@/utils/projectVisual'
 
 interface ProjectModalProps {
   project: Project | null
@@ -58,12 +59,20 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10 w-full md:max-w-3xl max-h-[92svh] md:max-h-[85vh] overflow-y-auto bg-surface border border-border md:rounded-sm"
           >
-            <div
-              className="h-40 md:h-52 relative border-b border-border shrink-0"
-              style={{
-                background: `radial-gradient(circle at 25% 20%, ${accentColor[project.accent]}33 0%, transparent 65%), var(--color-surface-raised)`,
-              }}
-            >
+            <div className="h-40 md:h-52 relative border-b border-border shrink-0 overflow-hidden">
+              {hasRealImage(project.image) ? (
+                <img src={project.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+              ) : (
+                <>
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background: `radial-gradient(circle at 25% 20%, ${accentColor[project.accent]}33 0%, transparent 65%), var(--color-surface-raised)`,
+                    }}
+                  />
+                  <ModalIcon project={project} accentColor={accentColor} />
+                </>
+              )}
               <button
                 ref={closeRef}
                 onClick={onClose}
@@ -73,7 +82,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               >
                 <X size={18} />
               </button>
-              <div className="absolute bottom-5 left-6 right-6">
+              <div className="absolute bottom-5 left-6 right-6 bg-gradient-to-t from-canvas/70 to-transparent pt-8 -mx-6 px-6">
                 <p className="font-mono text-xs text-text-low mb-1">{project.tagline}</p>
                 <h3 className="font-display text-2xl md:text-3xl text-text-high">{project.name}</h3>
               </div>
@@ -152,6 +161,21 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
         </motion.div>
       )}
     </AnimatePresence>
+  )
+}
+
+function ModalIcon({
+  project,
+  accentColor,
+}: {
+  project: Project
+  accentColor: Record<Project['accent'], string>
+}) {
+  const Icon = getProjectIcon(project)
+  return (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <Icon size={64} strokeWidth={1.5} className="opacity-25" style={{ color: accentColor[project.accent] }} />
+    </div>
   )
 }
 

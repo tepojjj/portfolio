@@ -68,7 +68,7 @@ export function Experience() {
       <Suspense fallback={null}>
         <ExperienceScene />
       </Suspense>
-      <div className="absolute inset-0 bg-gradient-to-b from-surface/60 via-surface/10 to-surface/70 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-surface/35 via-surface/5 to-surface/35 pointer-events-none" />
 
       <div className="relative z-10">
       <SectionHeading index="04 / Experience" title="Where the work has happened." />

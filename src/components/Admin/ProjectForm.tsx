@@ -94,6 +94,24 @@ export function ProjectForm({ initial, submitLabel, onCancel, onSubmit }: Projec
       </div>
 
       <div>
+        <label className={labelClass}>Image URL (optional)</label>
+        <input
+          className={fieldClass}
+          placeholder="https://... — leave blank to use a themed icon instead"
+          value={draft.image}
+          onChange={(e) => set('image', e.target.value)}
+        />
+        {draft.image && (
+          <img
+            src={draft.image}
+            alt=""
+            className="mt-3 h-32 w-full object-cover border border-border"
+            onError={(e) => (e.currentTarget.style.display = 'none')}
+          />
+        )}
+      </div>
+
+      <div>
         <label className={labelClass}>Description (card summary)</label>
         <textarea
           required

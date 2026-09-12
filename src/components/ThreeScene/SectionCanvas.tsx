@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, type ReactNode } from 'react'
+import { Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { useWebGLSupport } from '@/hooks/useWebGLSupport'
 import { usePrefersReducedMotion, useIsTouchDevice, useIsMobile } from '@/hooks/useMediaQuery'
@@ -41,6 +41,10 @@ export function SectionCanvas({
   const wrapperRef = useRef<HTMLDivElement>(null)
   const visibleRef = useRef(false)
   const mouseRef = useRef({ x: 0, y: 0 })
+  // Whether the <Canvas> itself should be mounted. Separate from visibleRef (which only
+  // pauses the render loop) — this actually creates/destroys the WebGL context, since
+  // browsers cap how many live contexts a page can hold and this site has one per section.
+  const [shouldMount, setShouldMount] = useState(false)
 
   const webglSupported = useWebGLSupport()
   const reducedMotion = usePrefersReducedMotion()
@@ -50,14 +54,26 @@ export function SectionCanvas({
   useEffect(() => {
     const el = wrapperRef.current
     if (!el) return
-    const observer = new IntersectionObserver(
+    // Tight margin for pausing the animation loop while still on/near screen.
+    const pauseObserver = new IntersectionObserver(
       ([entry]) => {
         visibleRef.current = entry.isIntersecting
       },
       { threshold: 0.05, rootMargin: '10% 0px' }
     )
-    observer.observe(el)
-    return () => observer.disconnect()
+    // Wide margin for actually mounting/unmounting the Canvas: mount a bit before it's
+    // reached, unmount once it's well out of view so the GL context gets disposed and
+    // frees that context slot for the sections the user is actually looking at.
+    const mountObserver = new IntersectionObserver(
+      ([entry]) => setShouldMount(entry.isIntersecting),
+      { threshold: 0, rootMargin: '50% 0px' }
+    )
+    pauseObserver.observe(el)
+    mountObserver.observe(el)
+    return () => {
+      pauseObserver.disconnect()
+      mountObserver.disconnect()
+    }
   }, [])
 
   useEffect(() => {
@@ -79,7 +95,7 @@ export function SectionCanvas({
     <div ref={wrapperRef} className={`absolute inset-0 pointer-events-none ${className}`} aria-hidden="true">
       {webglSupported === false ? (
         fallback
-      ) : webglSupported === null ? null : (
+      ) : webglSupported === null || !shouldMount ? null : (
         <Canvas
           dpr={lightweight ? [1, 1.25] : [1, 1.5]}
           camera={{ position: cameraPosition, fov }}
