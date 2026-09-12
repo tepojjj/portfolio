@@ -3,6 +3,7 @@ import { Loader } from '@/components/Loader/Loader'
 import { CustomCursor } from '@/components/CustomCursor/CustomCursor'
 import { Navbar } from '@/components/Navbar/Navbar'
 import { Hero } from '@/components/Hero/Hero'
+import { Marquee } from '@/components/Marquee/Marquee'
 import { About } from '@/components/About/About'
 import { Skills } from '@/components/Skills/Skills'
 import { Projects } from '@/components/Projects/Projects'
@@ -37,6 +38,7 @@ export function Portfolio() {
           <div className="lg:pl-72">
             <main className="pt-16 lg:pt-0">
               <Hero />
+              <Marquee />
               <About />
               <Skills />
               <Projects />
