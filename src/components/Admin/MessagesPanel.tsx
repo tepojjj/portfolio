@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { Trash2, Mail, MailOpen } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import type { DbMessage } from '@/lib/types'
+import { services } from '@/data/services'
+import { useSiteContact } from '@/hooks/useSiteContact'
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleString(undefined, {
@@ -13,21 +15,59 @@ function formatDate(iso: string) {
   })
 }
 
-function gmailComposeUrl(msg: DbMessage) {
-  const body = `Hi ${msg.name},\n\n\n\n---\nOn ${formatDate(msg.created_at)}, you wrote:\n${msg.message}`
+// Highlight a focused subset of services in the reply pitch rather than the
+// full list — a short, scannable pitch reads better in an email than all
+// seven at once.
+const PITCH_SERVICE_IDS = ['web-dev', 'data-analytics', 'automation', 'dashboards']
+
+function buildReplyBody(msg: DbMessage) {
+  const serviceLines = services
+    .filter((s) => PITCH_SERVICE_IDS.includes(s.id))
+    .map((s) => `- ${s.title}: ${s.description}`)
+    .join('\n')
+
+  return [
+    `Hi ${msg.name},`,
+    '',
+    "Thanks so much for reaching out — I appreciate you taking the time to message me.",
+    '',
+    "A bit about what I do, in case it's useful for what you have in mind:",
+    serviceLines,
+    '',
+    "For context: I recently automated floor/zone assignment for ~62,000 product rows across 64 stores, and replaced a fully manual reconciliation process with self-serve tools. If you're dealing with anything similarly repetitive, disconnected, or hard to keep in sync, that's exactly the kind of problem I enjoy solving.",
+    '',
+    "Happy to hop on a quick call or keep chatting over email, whichever's easier for you. Let me know a bit more about what you need and I'll share some thoughts on how I could help.",
+    '',
+    'Best,',
+    'Jopet',
+    '',
+    '---',
+    `On ${formatDate(msg.created_at)}, you wrote:`,
+    msg.message,
+  ].join('\n')
+}
+
+function gmailComposeUrl(msg: DbMessage, fromEmail: string) {
   const params = new URLSearchParams({
     view: 'cm',
     fs: '1',
     to: msg.email,
     su: `Re: ${msg.subject || 'your message'}`,
-    body,
+    body: buildReplyBody(msg),
   })
+  // authuser targets a specific signed-in Google account so the compose
+  // window opens as fromEmail instead of whichever account happens to be
+  // active in the current browser/profile — but only if fromEmail is
+  // actually signed in there. If it isn't, Gmail will prompt to switch/sign
+  // in rather than silently sending as the wrong address.
+  if (fromEmail) params.set('authuser', fromEmail)
   return `https://mail.google.com/mail/?${params.toString()}`
 }
 
 function mailtoUrl(msg: DbMessage) {
   const params = new URLSearchParams({
     subject: `Re: ${msg.subject || 'your message'}`,
+    body: buildReplyBody(msg),
   })
   return `mailto:${msg.email}?${params.toString()}`
 }
@@ -37,6 +77,7 @@ interface MessagesPanelProps {
 }
 
 export function MessagesPanel({ onChange }: MessagesPanelProps) {
+  const { contact } = useSiteContact()
   const [messages, setMessages] = useState<DbMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -138,9 +179,15 @@ export function MessagesPanel({ onChange }: MessagesPanelProps) {
               {isOpen && (
                 <div className="px-4 pb-4 pt-1 border-t border-border-soft">
                   <p className="text-sm text-text-mid whitespace-pre-wrap leading-relaxed">{msg.message}</p>
-                  <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+                  <p className="mt-3 text-xs text-text-low">
+                    Both reply options below are pre-filled with a greeting and a short pitch of your
+                    services — review and tweak the wording before sending. "Reply in Gmail" opens as{' '}
+                    {contact.email || 'your configured email'}, but only if you're signed into that
+                    account in this browser — otherwise Gmail will ask you to switch or sign in.
+                  </p>
+                  <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
                     <a
-                      href={gmailComposeUrl(msg)}
+                      href={gmailComposeUrl(msg, contact.email)}
                       target="_blank"
                       rel="noreferrer noopener"
                       className="inline-flex items-center gap-1.5 text-sm text-teal hover:underline"
