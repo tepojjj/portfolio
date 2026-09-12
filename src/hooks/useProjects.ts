@@ -19,6 +19,7 @@ function toProject(row: DbProject): Project {
     results: row.results,
     github: row.github ?? undefined,
     demo: row.demo ?? undefined,
+    previewUrls: row.preview_urls ?? undefined,
     accent: row.accent,
   }
 }

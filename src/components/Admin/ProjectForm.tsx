@@ -232,6 +232,25 @@ export function ProjectForm({ initial, submitLabel, onCancel, onSubmit }: Projec
         </div>
       </div>
 
+      <div>
+        <label className={labelClass}>Live preview tabs (one URL per line, optional)</label>
+        <textarea
+          rows={3}
+          className={fieldClass}
+          placeholder={'Cycles the card-hover preview through these pages.\nLeave blank to just use the live demo URL above.'}
+          value={(draft.preview_urls ?? []).join('\n')}
+          onChange={(e) =>
+            set(
+              'preview_urls',
+              e.target.value.split('\n').map((u) => u.trim()).filter(Boolean)
+            )
+          }
+        />
+        <p className="mt-1.5 text-xs text-text-low">
+          Note: sites that block being framed (X-Frame-Options/CSP) won't show a preview regardless of this list.
+        </p>
+      </div>
+
       {error && <p className="text-status-remove text-sm">{error}</p>}
 
       <div className="flex gap-3 pt-2">

@@ -13,6 +13,11 @@ export interface Project {
   results: string
   github?: string
   demo?: string
+  /** Extra pages/tabs of the live site to cycle through during the card hover
+   * preview (e.g. the dashboard, a detail view, settings). Falls back to just
+   * `demo` when empty. Sites that block framing (X-Frame-Options/CSP) won't
+   * preview regardless of this list. */
+  previewUrls?: string[]
   accent: 'teal' | 'amber'
 }
 

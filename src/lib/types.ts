@@ -17,6 +17,7 @@ export interface DbProject {
   results: string
   github: string | null
   demo: string | null
+  preview_urls: string[] | null
   accent: Accent
   sort_order: number
   created_at: string
@@ -41,6 +42,7 @@ export const emptyDraft: ProjectDraft = {
   results: '',
   github: '',
   demo: '',
+  preview_urls: [],
   accent: 'teal',
   sort_order: 0,
 }
