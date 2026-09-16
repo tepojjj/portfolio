@@ -11,12 +11,18 @@ const SkillsScene = lazy(() =>
 
 const ICONS = [Layers, Server, LineChart, Workflow, Database]
 const ACCENTS = ['#6EE7A0', '#C7E38A', '#6EE7A0', '#C7E38A', '#6EE7A0']
+// Photos hotlinked from Unsplash's CDN (free to embed under the Unsplash License,
+// no download/rehosting needed — https://unsplash.com/license)
 const BACKGROUNDS: Record<string, string> = {
-  frontend: '/skill-images/frontend.svg',
-  backend: '/skill-images/backend.svg',
-  data: '/skill-images/data.svg',
-  automation: '/skill-images/automation.svg',
-  'ops-platforms': '/skill-images/ops-platforms.svg',
+  frontend:
+    'https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?auto=format&fit=crop&w=800&q=70',
+  backend:
+    'https://images.unsplash.com/photo-1607706189992-eae578626c86?auto=format&fit=crop&w=800&q=70',
+  data: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=70',
+  automation:
+    'https://images.unsplash.com/photo-1743385779347-1549dabf1320?auto=format&fit=crop&w=800&q=70',
+  'ops-platforms':
+    'https://images.unsplash.com/photo-1644079446600-219068676743?auto=format&fit=crop&w=800&q=70',
 }
 
 export function Skills() {

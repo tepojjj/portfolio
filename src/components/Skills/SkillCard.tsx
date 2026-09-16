@@ -17,20 +17,14 @@ export function SkillCard({ category, icon: Icon, accent, background }: SkillCar
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
       data-cursor="interactive"
     >
-      {/* Background texture — mask so it tints with this card's accent color */}
+      {/* Background photo, darkened for text legibility */}
       {background && (
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.14] group-hover:opacity-[0.28] transition-opacity duration-500"
+          className="pointer-events-none absolute inset-0 opacity-[0.55] group-hover:opacity-[0.8] transition-opacity duration-500"
           style={{
-            backgroundColor: accent,
-            WebkitMaskImage: `url(${background})`,
-            maskImage: `url(${background})`,
-            WebkitMaskSize: 'cover',
-            maskSize: 'cover',
-            WebkitMaskPosition: 'center',
-            maskPosition: 'center',
-            WebkitMaskRepeat: 'no-repeat',
-            maskRepeat: 'no-repeat',
+            backgroundImage: `linear-gradient(180deg, rgba(8,15,11,0.55) 0%, rgba(8,15,11,0.88) 65%, rgba(8,15,11,0.96) 100%), url(${background})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
         />
       )}
