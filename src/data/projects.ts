@@ -31,7 +31,7 @@ export const fallbackProjects: Project[] = [
     tagline: 'Cleaning up 62,000 SKUs across 64 stores',
     description:
       'A Python pipeline that cross-references live Lark Base exports against Excel master files to catch and correct per-store inventory discrepancies, then automates floor and zone assignment at scale.',
-    image: 'reconciliation',
+    image: '/project-images/inventory-reconciliation.webp',
     tech: ['Python', 'Pandas', 'Lark Base API', 'Excel'],
     features: [
       'Cross-references Lark Base exports against Excel masters',
@@ -57,7 +57,7 @@ export const fallbackProjects: Project[] = [
     tagline: 'One dashboard for the whole warehouse floor',
     description:
       'A React admin console connected to a Lark Base backend for searching and editing products, generating QR codes and print-ready labels, and watching live stock stats without opening the base directly.',
-    image: 'console',
+    image: '/project-images/warehouse-ops-console.webp',
     tech: ['React', 'Express', 'Lark Base API', 'OAuth'],
     features: [
       'Collapsible sidebar with live stats cards on the homepage',
@@ -83,7 +83,7 @@ export const fallbackProjects: Project[] = [
     tagline: 'Turning storefront data into decisions',
     description:
       'Looker Studio dashboards built on GA4 and Shopify data pipelines, giving a clear read on sales, product performance, and revenue trends without digging through raw exports.',
-    image: 'analytics',
+    image: '/project-images/retail-analytics.webp',
     tech: ['Looker Studio', 'GA4', 'Shopify API', 'SQL'],
     features: [
       'Sales monitoring across channels',
@@ -109,7 +109,7 @@ export const fallbackProjects: Project[] = [
     tagline: 'Fuzzy-matching messy product data on import',
     description:
       'A tool that parses product files in almost any format, including XLSX, CSV, PDF, and even scanned images via OCR, and uses Sørensen–Dice string matching to reconcile them against existing catalog data before import.',
-    image: 'fuzzy',
+    image: '/project-images/fuzzy-import.webp',
     tech: ['Python', 'OCR', 'Sørensen–Dice Matching'],
     features: [
       'Multi-format parsing: XLSX, CSV, PDF, and image/OCR',
@@ -135,7 +135,7 @@ export const fallbackProjects: Project[] = [
     tagline: 'Keep, Watch, Reduce, or Remove, at a glance',
     description:
       'A React dashboard that reads CSV sales exports and classifies every product into Keep, Watch, Reduce, or Remove, with bilingual header parsing and a dedicated tab for spotting new arrivals.',
-    image: 'classifier',
+    image: '/project-images/inventory-classifier.webp',
     tech: ['React', 'JavaScript', 'CSV Parsing'],
     features: [
       'Automatic Keep / Watch / Reduce / Remove classification',
