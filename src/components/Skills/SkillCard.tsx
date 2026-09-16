@@ -12,21 +12,26 @@ interface SkillCardProps {
 export function SkillCard({ category, icon: Icon, accent, background }: SkillCardProps) {
   return (
     <motion.div
-      className="group relative bg-surface border border-border p-7 overflow-hidden"
+      className="group relative rounded-2xl border border-border bg-surface overflow-hidden"
       whileHover={{ y: -6 }}
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
       data-cursor="interactive"
     >
-      {/* Background photo, darkened for text legibility */}
+      {/* Photo banner, fading into the solid card below */}
       {background && (
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.55] group-hover:opacity-[0.8] transition-opacity duration-500"
-          style={{
-            backgroundImage: `linear-gradient(180deg, rgba(8,15,11,0.55) 0%, rgba(8,15,11,0.88) 65%, rgba(8,15,11,0.96) 100%), url(${background})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
+        <div className="relative h-36 w-full overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+            style={{ backgroundImage: `url(${background})` }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(180deg, rgba(21,48,31,0) 0%, rgba(21,48,31,0.55) 60%, #15301f 96%)',
+            }}
+          />
+        </div>
       )}
 
       {/* Glow on hover */}
@@ -35,9 +40,9 @@ export function SkillCard({ category, icon: Icon, accent, background }: SkillCar
         style={{ background: accent }}
       />
 
-      <div className="relative">
+      <div className={`relative px-7 pb-7 ${background ? '-mt-6' : 'pt-7'}`}>
         <div
-          className="w-11 h-11 flex items-center justify-center border transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105"
+          className="w-11 h-11 flex items-center justify-center rounded-lg border backdrop-blur-sm bg-surface/85 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105"
           style={{ borderColor: accent, color: accent }}
         >
           <Icon size={20} />
