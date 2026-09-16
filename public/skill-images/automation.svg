@@ -1,0 +1,19 @@
+<svg viewBox="0 0 400 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="110" cy="80" r="22" stroke="#ffffff" stroke-width="1.3"/>
+  <circle cx="230" cy="80" r="22" stroke="#ffffff" stroke-width="1.3"/>
+  <circle cx="170" cy="180" r="22" stroke="#ffffff" stroke-width="1.3"/>
+  <line x1="132" y1="80" x2="208" y2="80" stroke="#ffffff" stroke-width="1.2"/>
+  <line x1="216" y1="98" x2="184" y2="164" stroke="#ffffff" stroke-width="1.2"/>
+  <line x1="156" y1="164" x2="124" y2="98" stroke="#ffffff" stroke-width="1.2"/>
+  <path d="M200 78 l8 -4 l-2 9 z" fill="#ffffff"/>
+  <path d="M188 150 l3 9 l-9 -3 z" fill="#ffffff"/>
+  <path d="M142 108 l-9 -3 l7 -6 z" fill="#ffffff"/>
+  <g transform="translate(300,60)">
+    <circle r="18" stroke="#ffffff" stroke-width="1.2"/>
+    <circle r="6" stroke="#ffffff" stroke-width="1.2"/>
+    <line x1="0" y1="-24" x2="0" y2="-30" stroke="#ffffff" stroke-width="1.2"/>
+    <line x1="0" y1="24" x2="0" y2="30" stroke="#ffffff" stroke-width="1.2"/>
+    <line x1="-24" y1="0" x2="-30" y2="0" stroke="#ffffff" stroke-width="1.2"/>
+    <line x1="24" y1="0" x2="30" y2="0" stroke="#ffffff" stroke-width="1.2"/>
+  </g>
+</svg>

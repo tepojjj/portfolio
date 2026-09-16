@@ -6,9 +6,10 @@ interface SkillCardProps {
   category: SkillCategory
   icon: LucideIcon
   accent: string
+  background?: string
 }
 
-export function SkillCard({ category, icon: Icon, accent }: SkillCardProps) {
+export function SkillCard({ category, icon: Icon, accent, background }: SkillCardProps) {
   return (
     <motion.div
       className="group relative bg-surface border border-border p-7 overflow-hidden"
@@ -16,6 +17,24 @@ export function SkillCard({ category, icon: Icon, accent }: SkillCardProps) {
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
       data-cursor="interactive"
     >
+      {/* Background texture — mask so it tints with this card's accent color */}
+      {background && (
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.14] group-hover:opacity-[0.28] transition-opacity duration-500"
+          style={{
+            backgroundColor: accent,
+            WebkitMaskImage: `url(${background})`,
+            maskImage: `url(${background})`,
+            WebkitMaskSize: 'cover',
+            maskSize: 'cover',
+            WebkitMaskPosition: 'center',
+            maskPosition: 'center',
+            WebkitMaskRepeat: 'no-repeat',
+            maskRepeat: 'no-repeat',
+          }}
+        />
+      )}
+
       {/* Glow on hover */}
       <div
         className="pointer-events-none absolute -top-16 -right-16 w-40 h-40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl"
