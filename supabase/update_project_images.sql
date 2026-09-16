@@ -12,3 +12,8 @@ update public.projects set image = '/project-images/warehouse-ops-console.webp' 
 update public.projects set image = '/project-images/retail-analytics.webp'          where slug = 'retail-analytics';
 update public.projects set image = '/project-images/fuzzy-import.webp'              where slug = 'fuzzy-import';
 update public.projects set image = '/project-images/inventory-classifier.webp'      where slug = 'inventory-classifier';
+
+-- Mardams Job Order System — replace 'REPLACE_WITH_SLUG' with its actual
+-- slug from the admin panel or the projects table (SELECT slug, name FROM
+-- public.projects; to find it).
+update public.projects set image = '/project-images/mardams-job-order.webp' where slug = 'REPLACE_WITH_SLUG';
