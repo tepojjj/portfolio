@@ -13,11 +13,11 @@ const AnalyticsScene = lazy(() =>
 )
 
 const tooltipStyle = {
-  background: '#161d26',
-  border: '1px solid #232d3a',
+  background: 'var(--color-surface-raised)',
+  border: '1px solid var(--color-border)',
   borderRadius: 0,
   fontSize: 12,
-  color: '#edf1f5',
+  color: 'var(--color-text-high)',
 }
 
 function ChartPanel({ title, children }: { title: string; children: React.ReactNode }) {
@@ -68,7 +68,7 @@ export function Analytics() {
                     <stop offset="100%" stopColor="#6EE7A0" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid stroke="#1a222c" vertical={false} />
+                <CartesianGrid stroke="var(--color-border-soft)" vertical={false} />
                 <XAxis dataKey="month" stroke="#5c6875" fontSize={11} tickLine={false} axisLine={false} />
                 <YAxis stroke="#5c6875" fontSize={11} tickLine={false} axisLine={false} width={40} tickFormatter={(v) => `${v / 1000}k`} />
                 <Tooltip contentStyle={tooltipStyle} formatter={(v) => [`₱${Number(v).toLocaleString()}`, 'Sales']} />
@@ -109,7 +109,7 @@ export function Analytics() {
           <ChartPanel title="REVENUE BY CHANNEL">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={revenueByChannel} layout="vertical" margin={{ left: 12 }}>
-                <CartesianGrid stroke="#1a222c" horizontal={false} />
+                <CartesianGrid stroke="var(--color-border-soft)" horizontal={false} />
                 <XAxis type="number" stroke="#5c6875" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `${v / 1000}k`} />
                 <YAxis dataKey="channel" type="category" stroke="#9caab8" fontSize={12} tickLine={false} axisLine={false} width={90} />
                 <Tooltip contentStyle={tooltipStyle} formatter={(v) => [`₱${Number(v).toLocaleString()}`, 'Revenue']} />
@@ -123,7 +123,7 @@ export function Analytics() {
           <ChartPanel title="Q4 FORECAST (PROJECTED)">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={forecast}>
-                <CartesianGrid stroke="#1a222c" vertical={false} />
+                <CartesianGrid stroke="var(--color-border-soft)" vertical={false} />
                 <XAxis dataKey="month" stroke="#5c6875" fontSize={11} tickLine={false} axisLine={false} />
                 <YAxis stroke="#5c6875" fontSize={11} tickLine={false} axisLine={false} width={40} tickFormatter={(v) => `${v / 1000}k`} />
                 <Tooltip contentStyle={tooltipStyle} formatter={(v) => (v ? [`₱${Number(v).toLocaleString()}`, ''] : ['—', ''])} />

@@ -28,7 +28,7 @@ export function SkillCard({ category, icon: Icon, accent, background }: SkillCar
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(180deg, rgba(21,48,31,0) 0%, rgba(21,48,31,0.55) 60%, #15301f 96%)',
+                'linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--color-surface) 55%, transparent) 60%, var(--color-surface) 96%)',
             }}
           />
         </div>
