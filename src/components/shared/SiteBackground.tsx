@@ -10,14 +10,14 @@ export function SiteBackground() {
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none" aria-hidden="true">
       <div
-        className="absolute inset-0 bg-cover bg-center transition-[filter] duration-0"
+        className="absolute inset-0 bg-cover bg-center transition-[filter] duration-300"
         style={{
           backgroundImage: `url(${BACKGROUND_PHOTO})`,
           filter: 'var(--bg-photo-filter)',
         }}
       />
       <div
-        className="absolute inset-0 transition-colors duration-0"
+        className="absolute inset-0 transition-colors duration-300"
         style={{
           backgroundColor: 'color-mix(in srgb, var(--color-canvas) var(--bg-photo-tint), transparent)',
         }}

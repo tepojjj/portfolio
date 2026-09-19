@@ -61,6 +61,20 @@ export function ContactForm() {
         message: values.message.trim(),
       })
       if (insertError) throw new Error(insertError.message)
+
+      // Fire the auto-reply. Intentionally not awaited into the try/catch
+      // above — the message is already saved in Supabase either way, so an
+      // email failure (e.g. Resend not configured yet) shouldn't block the
+      // visitor from seeing their message went through.
+      fetch('/api/send-auto-reply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: values.name.trim(), email: values.email.trim() }),
+      }).catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error('Auto-reply failed to send:', err)
+      })
+
       setStatus('success')
       setValues(initialState)
     } catch (err) {

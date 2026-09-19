@@ -36,7 +36,7 @@
 /* Site-wide background photo (see SiteBackground.tsx): how much of the
    canvas color covers it. */
 :root {
-  --bg-photo-tint: 00%;
+  --bg-photo-tint: 30%;
   --bg-photo-filter: none;
 }
 
