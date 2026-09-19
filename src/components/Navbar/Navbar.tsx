@@ -13,8 +13,6 @@ import {
   Mail,
 } from 'lucide-react'
 import { useActiveSection, useScrollProgress } from '@/hooks/useScrollProgress'
-import { useTheme } from '@/hooks/useTheme'
-import { ThemeToggle } from '@/components/shared/ThemeToggle'
 import profileImg from '@/assets/profile.png'
 
 const NAV_GROUPS = [
@@ -44,7 +42,6 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const active = useActiveSection(NAV_IDS)
   const scrollProgress = useScrollProgress()
-  const { theme, toggleTheme } = useTheme()
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : ''
@@ -127,11 +124,10 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="px-6 py-5 border-t border-border-soft flex items-center justify-between gap-3">
+        <div className="px-6 py-5 border-t border-border-soft">
           <p className="font-mono text-[11px] text-text-low">
             © {new Date().getFullYear()} Jopet Pallarcon
           </p>
-          <ThemeToggle theme={theme} onToggle={toggleTheme} />
         </div>
       </aside>
 
@@ -156,18 +152,15 @@ export function Navbar() {
             </span>
           </button>
 
-          <div className="flex items-center gap-2">
-            <ThemeToggle theme={theme} onToggle={toggleTheme} />
-            <button
-              className="text-text-high"
-              onClick={() => setMobileOpen((v) => !v)}
-              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={mobileOpen}
-              data-cursor="interactive"
-            >
-              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
-          </div>
+          <button
+            className="text-text-high"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileOpen}
+            data-cursor="interactive"
+          >
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
         <div className="h-0.5 bg-border-soft">
           <div
