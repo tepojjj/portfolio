@@ -16,7 +16,7 @@ export function SiteBackground() {
       />
       <div
         className="absolute inset-0"
-        style={{ backgroundColor: 'color-mix(in srgb, var(--color-canvas) 88%, transparent)' }}
+        style={{ backgroundColor: 'color-mix(in srgb, var(--color-canvas) 60%, transparent)' }}
       />
     </div>
   )
