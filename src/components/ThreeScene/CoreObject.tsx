@@ -7,8 +7,11 @@ interface CoreObjectProps {
   reducedMotion: boolean
 }
 
-/** The central wireframe icosahedron — the "floating object representing
- * technology/data" the brief asks for. Slowly rotates and breathes in scale. */
+/** The central wireframe globe — the "floating object representing
+ * technology/data" the brief asks for. Slowly rotates (with a slight axial
+ * tilt, globe-style) and breathes in scale. Toned down from the earlier
+ * icosahedron version: lower opacity/emissive so it reads as a supporting
+ * visual behind the headline rather than competing with it. */
 export function CoreObject({ visibleRef, reducedMotion }: CoreObjectProps) {
   const wireRef = useRef<THREE.Mesh>(null)
   const glowRef = useRef<THREE.Mesh>(null)
@@ -21,7 +24,6 @@ export function CoreObject({ visibleRef, reducedMotion }: CoreObjectProps) {
 
     if (wireRef.current) {
       wireRef.current.rotation.y += speed * 0.12
-      wireRef.current.rotation.x += speed * 0.05
     }
     if (glowRef.current) {
       const scale = 1 + Math.sin(t.current * 0.6) * 0.03
@@ -33,18 +35,19 @@ export function CoreObject({ visibleRef, reducedMotion }: CoreObjectProps) {
   return (
     <group>
       <mesh ref={glowRef}>
-        <icosahedronGeometry args={[1.4, 1]} />
-        <meshBasicMaterial color="#6EE7A0" transparent opacity={0.05} />
+        <sphereGeometry args={[1.4, 24, 16]} />
+        <meshBasicMaterial color="#6EE7A0" transparent opacity={0.04} />
       </mesh>
-      <mesh ref={wireRef}>
-        <icosahedronGeometry args={[1.4, 1]} />
+      {/* Earth-like axial tilt (~23.5°) so the latitude/longitude grid reads as a globe, not a ball */}
+      <mesh ref={wireRef} rotation={[0.41, 0, 0]}>
+        <sphereGeometry args={[1.4, 18, 12]} />
         <meshStandardMaterial
           color="#6EE7A0"
           wireframe
           emissive="#6EE7A0"
-          emissiveIntensity={0.4}
+          emissiveIntensity={0.25}
           transparent
-          opacity={0.85}
+          opacity={0.5}
         />
       </mesh>
     </group>
