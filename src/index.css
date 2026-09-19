@@ -64,7 +64,7 @@
   --color-teal: #0f9d58;
   --color-teal-soft: #0f9d5826;
 
-  --bg-photo-tint: 93%;
+  --bg-photo-tint: 30%;
   --bg-photo-filter: grayscale(0.5) brightness(1.5) contrast(0.85);
 }
 
