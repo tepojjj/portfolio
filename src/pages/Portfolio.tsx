@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Loader } from '@/components/Loader/Loader'
 import { CustomCursor } from '@/components/CustomCursor/CustomCursor'
+import { SiteBackground } from '@/components/shared/SiteBackground'
 import { Navbar } from '@/components/Navbar/Navbar'
 import { Hero } from '@/components/Hero/Hero'
 import { Marquee } from '@/components/Marquee/Marquee'
@@ -33,6 +34,7 @@ export function Portfolio() {
       <Loader onDone={() => setLoading(false)} />
       {!loading && (
         <>
+          <SiteBackground />
           <CustomCursor />
           <Navbar />
           <div className="lg:pl-72">
