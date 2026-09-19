@@ -30,8 +30,17 @@ export function Hero() {
       </div>
 
       {/* Vignette so the 3D scene supports the text instead of competing with it */}
-      <div className="absolute inset-0 bg-gradient-to-b from-canvas/40 via-transparent to-canvas pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-canvas/70 via-transparent to-canvas/30 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-canvas/55 via-transparent to-canvas pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-canvas/85 via-transparent to-canvas/45 pointer-events-none" />
+      {/* Extra dark pocket right behind the globe so its wireframe glow reads
+          clearly against the busy photo, rather than blending into it */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(circle at 68% 48%, color-mix(in srgb, var(--color-canvas) 55%, transparent) 0%, transparent 42%)',
+        }}
+      />
 
       <div
         className="relative z-10 mx-auto max-w-6xl w-full px-6 md:px-10"

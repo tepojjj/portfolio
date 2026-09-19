@@ -81,6 +81,7 @@ export function MessagesPanel({ onChange }: MessagesPanelProps) {
   const [messages, setMessages] = useState<DbMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [actionError, setActionError] = useState<string | null>(null)
   const [openId, setOpenId] = useState<string | null>(null)
 
   const load = useCallback(async () => {
@@ -104,11 +105,29 @@ export function MessagesPanel({ onChange }: MessagesPanelProps) {
     setOpenId(opening ? msg.id : null)
     if (opening && !msg.read) {
       const { error: updateError } = await supabase.from('messages').update({ read: true }).eq('id', msg.id)
-      if (!updateError) {
-        setMessages((prev) => prev.map((m) => (m.id === msg.id ? { ...m, read: true } : m)))
-        onChange?.()
+      if (updateError) {
+        // Previously failed silently — the message would open and look read,
+        // but if this update didn't actually commit (e.g. a missing/broken
+        // update RLS policy on the messages table), the unread badge would
+        // stay stuck forever with no indication why. Surface it instead.
+        setActionError(`Couldn't mark message as read: ${updateError.message}`)
+        return
       }
+      setMessages((prev) => prev.map((m) => (m.id === msg.id ? { ...m, read: true } : m)))
+      onChange?.()
     }
+  }
+
+  const handleMarkAllRead = async () => {
+    const unreadIds = messages.filter((m) => !m.read).map((m) => m.id)
+    if (unreadIds.length === 0) return
+    const { error: updateError } = await supabase.from('messages').update({ read: true }).in('id', unreadIds)
+    if (updateError) {
+      setActionError(`Couldn't mark messages as read: ${updateError.message}`)
+      return
+    }
+    setMessages((prev) => prev.map((m) => (unreadIds.includes(m.id) ? { ...m, read: true } : m)))
+    onChange?.()
   }
 
   const handleDelete = async (msg: DbMessage) => {
@@ -134,10 +153,23 @@ export function MessagesPanel({ onChange }: MessagesPanelProps) {
 
   return (
     <div>
-      {unreadCount > 0 && (
-        <p className="text-text-low text-xs font-mono mb-4">
-          {unreadCount} unread message{unreadCount === 1 ? '' : 's'}
+      {actionError && (
+        <p className="text-status-remove text-xs font-mono mb-4 border border-status-remove/40 bg-status-remove/10 px-3 py-2">
+          {actionError}
         </p>
+      )}
+      {unreadCount > 0 && (
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <p className="text-text-low text-xs font-mono">
+            {unreadCount} unread message{unreadCount === 1 ? '' : 's'}
+          </p>
+          <button
+            onClick={handleMarkAllRead}
+            className="text-xs text-teal hover:underline shrink-0"
+          >
+            Mark all as read
+          </button>
+        </div>
       )}
       <div className="space-y-3">
         {messages.map((msg) => {

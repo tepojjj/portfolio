@@ -33,6 +33,17 @@
   --breakpoint-xs: 420px;
 }
 
+/* Site-wide background photo (see SiteBackground.tsx): how much of the
+   canvas color covers it, and how the photo itself is filtered. Dark mode
+   lets more of the moody photo show through since it already matches the
+   dark palette; light mode needs a much stronger tint plus a desaturating
+   filter, or a dark high-contrast photo just reads as a muddy haze on a
+   light page instead of a subtle texture. */
+:root {
+  --bg-photo-tint: 30%;
+  --bg-photo-filter: none;
+}
+
 /* Light theme — same tokens, flipped surfaces/text. Accents stay the same
    hue across both themes so the brand reads consistently. Toggled by
    setting data-theme="light" on <html> (see ThemeToggle / useTheme). */
@@ -52,6 +63,9 @@
   --color-amber-soft: #6b8f2a26;
   --color-teal: #0f9d58;
   --color-teal-soft: #0f9d5826;
+
+  --bg-photo-tint: 93%;
+  --bg-photo-filter: grayscale(0.5) brightness(1.5) contrast(0.85);
 }
 
 * {

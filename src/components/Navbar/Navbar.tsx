@@ -63,7 +63,7 @@ export function Navbar() {
       {/* Desktop sidebar */}
       <aside
         aria-label="Primary"
-        className="hidden lg:flex fixed inset-y-0 left-0 z-50 w-72 flex-col bg-surface/90 backdrop-blur-md border-r border-border"
+        className="hidden lg:flex fixed inset-y-0 left-0 z-50 w-72 flex-col bg-surface/95 backdrop-blur-md border-r border-border"
       >
         {/* Scroll progress rail along the sidebar's outer edge */}
         <div className="absolute right-0 top-0 w-px h-full bg-border-soft">
@@ -136,7 +136,7 @@ export function Navbar() {
       </aside>
 
       {/* Mobile top bar */}
-      <header className="lg:hidden fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-md border-b border-border">
+      <header className="lg:hidden fixed top-0 inset-x-0 z-50 bg-surface/95 backdrop-blur-md border-b border-border">
         <div className="flex items-center justify-between px-5 py-3">
           <button
             onClick={() => handleNav('home')}
