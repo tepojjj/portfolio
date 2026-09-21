@@ -194,8 +194,8 @@ textarea:focus-visible,
    lit trace with flowing current, HUD reticle sweep, avatar ring.
    ------------------------------------------------------------------ */
 .nav-shell {
-  --mx: 50%;
-  --my: 30%;
+  --mx: 144px;
+  --my: 320px;
 }
 
 .nav-grid,
@@ -295,5 +295,36 @@ textarea:focus-visible,
   }
   to {
     transform: translateX(420%);
+  }
+}
+
+
+/* Sidebar photo: drifts a few px against the pointer for depth, and the tint
+   eases off a little while the sidebar is hovered so the photo comes forward. */
+.nav-photo {
+  transform: translate3d(
+      calc((var(--mx) - 144px) * -0.04),
+      calc((var(--my) - 50vh) * -0.02),
+      0
+    )
+    scale(1.1);
+  transition: transform 0.25s ease-out, opacity 0.8s ease;
+  filter: var(--bg-photo-filter);
+}
+.nav-photo-tint {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-canvas) 80%, transparent) 0%,
+    color-mix(in srgb, var(--color-canvas) 48%, transparent) 45%,
+    color-mix(in srgb, var(--color-canvas) 82%, transparent) 100%
+  );
+  transition: opacity 0.5s ease;
+}
+.nav-shell:hover .nav-photo-tint {
+  opacity: 0.7;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-photo {
+    transform: scale(1.1);
   }
 }

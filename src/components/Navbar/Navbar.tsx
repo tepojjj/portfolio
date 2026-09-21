@@ -40,6 +40,14 @@ const NAV_GROUPS = [
 
 const NAV_IDS = NAV_GROUPS.flatMap((g) => g.items.map((i) => i.id))
 
+/** Sidebar background photo. Same circuit-board photo the page uses (Unsplash
+ * license, hotlinked from their CDN), cropped tall and zoomed in on a
+ * different area so the panel reads as its own surface. To use your own
+ * image, drop it in src/assets, `import photo from '@/assets/your-image.jpg'`
+ * and set SIDEBAR_PHOTO = photo. */
+const SIDEBAR_PHOTO =
+  'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&crop=focalpoint&fp-x=0.3&fp-y=0.6&fp-z=1.6&w=720&h=1600&q=70'
+
 /** Row geometry. The trace math below depends on these staying in sync with
  * the `h-11` rows and `gap-1` list spacing. */
 const ROW = 44
@@ -132,6 +140,7 @@ export function Navbar() {
   const asideRef = useRef<HTMLElement>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
   const [hovered, setHovered] = useState<string | null>(null)
+  const [photoLoaded, setPhotoLoaded] = useState(false)
   const [reticle, setReticle] = useState<ReticleState>({ y: 0, visible: false, snap: true, key: '' })
 
   useEffect(() => {
@@ -180,8 +189,22 @@ export function Navbar() {
         ref={asideRef}
         aria-label="Primary"
         onPointerMove={handlePointerMove}
-        className="nav-shell hidden lg:flex fixed inset-y-0 left-0 z-50 w-72 flex-col overflow-hidden bg-surface/95 backdrop-blur-md border-r border-border"
+        className="nav-shell hidden lg:flex fixed inset-y-0 left-0 z-50 w-72 flex-col overflow-hidden bg-canvas border-r border-border"
       >
+        {/* Photo, then a canvas-colored tint so text stays readable on it.
+            Falls back to the plain canvas color if the image can't load. */}
+        <img
+          src={SIDEBAR_PHOTO}
+          alt=""
+          aria-hidden
+          decoding="async"
+          onLoad={() => setPhotoLoaded(true)}
+          className={`nav-photo pointer-events-none absolute inset-0 h-full w-full object-cover ${
+            photoLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+        <div aria-hidden className="nav-photo-tint pointer-events-none absolute inset-0" />
+
         {/* Pointer-tracked hover layers */}
         <div aria-hidden className="nav-grid pointer-events-none absolute inset-0" />
         <div aria-hidden className="nav-glow pointer-events-none absolute inset-0" />
@@ -279,7 +302,7 @@ export function Navbar() {
 
               return (
                 <div key={group.label} className={gi > 0 ? 'mt-7' : ''}>
-                  <p className="mb-2 pl-3 font-mono text-[11px] text-text-low">{group.label}</p>
+                  <p className="mb-2 pl-3 font-mono text-[11px] text-text-mid">{group.label}</p>
 
                   <div className="relative">
                     {/* Each group is its own bus: dotted trace behind the nodes */}
