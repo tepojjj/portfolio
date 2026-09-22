@@ -74,8 +74,14 @@ export function Scene({ containerRef, scrollProgress }: SceneProps) {
         <pointLight position={[-5, -3, -4]} intensity={0.6} color="#C7E38A" />
         <directionalLight position={[0, 5, 2]} intensity={0.3} />
 
-        <CoreObject visibleRef={visibleRef} reducedMotion={reducedMotion} />
-        <DataNodes visibleRef={visibleRef} reducedMotion={reducedMotion} />
+        {/* Core + orbiting nodes are shifted right as a pair so the globe
+            sits clear of the text column instead of hanging dead-center
+            with empty canvas on either side. Particles stay centered as an
+            ambient full-bleed backdrop. */}
+        <group position={[1.7, 0, 0]}>
+          <CoreObject visibleRef={visibleRef} reducedMotion={reducedMotion} />
+          <DataNodes visibleRef={visibleRef} reducedMotion={reducedMotion} />
+        </group>
         <Particles visibleRef={visibleRef} reducedMotion={reducedMotion} count={isTouch ? 90 : 220} />
         <CameraRig mouseRef={mouseRef} scrollRef={scrollRef} reducedMotion={reducedMotion} />
       </Suspense>

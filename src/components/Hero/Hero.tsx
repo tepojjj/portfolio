@@ -43,7 +43,7 @@ export function Hero() {
       />
 
       <div
-        className="relative z-10 mx-auto max-w-6xl w-full px-6 md:px-10"
+        className="relative z-10 w-full px-6 md:px-12 lg:px-16 xl:pl-20"
         style={{
           transform: `translate(${mouse.normX * -6}px, ${mouse.normY * -4}px)`,
         }}
