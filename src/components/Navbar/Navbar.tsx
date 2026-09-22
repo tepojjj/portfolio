@@ -72,11 +72,12 @@ interface NavItemProps {
   index: string
   status: NodeStatus
   hovered: boolean
+  expanded: boolean
   onSelect: (id: string) => void
   onEnter: (id: string, el: HTMLElement) => void
 }
 
-function NavItem({ id, label, icon: Icon, index, status, hovered, onSelect, onEnter }: NavItemProps) {
+function NavItem({ id, label, icon: Icon, index, status, hovered, expanded, onSelect, onEnter }: NavItemProps) {
   const decoded = useDecode(label, hovered)
 
   return (
@@ -87,7 +88,10 @@ function NavItem({ id, label, icon: Icon, index, status, hovered, onSelect, onEn
         onFocus={(e) => onEnter(id, e.currentTarget)}
         data-cursor="interactive"
         aria-current={status === 'active' ? 'location' : undefined}
-        className="group relative z-10 flex h-11 w-full items-center gap-4 pl-3 pr-4 text-left text-sm"
+        title={expanded ? undefined : label}
+        className={`group relative z-10 flex h-11 w-full items-center pl-3 pr-4 text-left text-sm transition-[gap] duration-300 ease-in-out ${
+          expanded ? 'gap-4' : 'gap-0'
+        }`}
       >
         {/* Node on the trace */}
         <span
@@ -100,13 +104,14 @@ function NavItem({ id, label, icon: Icon, index, status, hovered, onSelect, onEn
         </span>
 
         {/* Real text holds the width (and the accessible name); the decoded
-            overlay sits on top so the layout never jitters. */}
+            overlay sits on top so the layout never jitters. Fades (and its
+            flex space collapses) when the rail is closed. */}
         <span
-          className={`relative transition-colors duration-200 group-hover:text-text-high ${
+          className={`relative min-w-0 shrink transition-[opacity,max-width] duration-200 ease-in-out group-hover:text-text-high ${
             status === 'active' ? 'font-medium text-text-high' : 'text-text-mid'
-          }`}
+          } ${expanded ? 'max-w-[160px] opacity-100 delay-100' : 'max-w-0 opacity-0'}`}
         >
-          <span className="opacity-0">{label}</span>
+          <span className="whitespace-nowrap opacity-0">{label}</span>
           <span aria-hidden className="absolute inset-0 whitespace-nowrap">
             {decoded}
           </span>
@@ -115,7 +120,9 @@ function NavItem({ id, label, icon: Icon, index, status, hovered, onSelect, onEn
         {/* Matches the "01 / About" numbering on the page itself */}
         <span
           aria-hidden
-          className="ml-auto -translate-x-1 font-mono text-[10px] tabular-nums text-teal opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100"
+          className={`ml-auto -translate-x-1 font-mono text-[10px] tabular-nums text-teal opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
+            expanded ? '' : 'hidden'
+          }`}
         >
           {index}
         </span>
@@ -142,6 +149,9 @@ export function Navbar() {
   const [hovered, setHovered] = useState<string | null>(null)
   const [photoLoaded, setPhotoLoaded] = useState(false)
   const [reticle, setReticle] = useState<ReticleState>({ y: 0, visible: false, snap: true, key: '' })
+  // Rail starts collapsed to icons-only and expands while the cursor is
+  // over it. Keyboard users who tab in get the same expansion via focus.
+  const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : ''
@@ -189,7 +199,15 @@ export function Navbar() {
         ref={asideRef}
         aria-label="Primary"
         onPointerMove={handlePointerMove}
-        className="nav-shell hidden lg:flex fixed inset-y-0 left-0 z-50 w-72 flex-col overflow-hidden bg-canvas border-r border-border"
+        onPointerEnter={() => setExpanded(true)}
+        onPointerLeave={() => setExpanded(false)}
+        onFocus={() => setExpanded(true)}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget)) setExpanded(false)
+        }}
+        className={`nav-shell hidden lg:flex fixed inset-y-0 left-0 z-50 flex-col overflow-hidden bg-canvas border-r border-border transition-[width] duration-300 ease-in-out ${
+          expanded ? 'w-72' : 'w-[84px]'
+        }`}
       >
         {/* Photo, then a canvas-colored tint so text stays readable on it.
             Falls back to the plain canvas color if the image can't load. */}
@@ -217,11 +235,17 @@ export function Navbar() {
           />
         </div>
 
-        <div className="relative px-6 pt-8 pb-6 border-b border-border-soft">
+        <div
+          className={`relative pt-8 pb-6 border-b border-border-soft transition-[padding] duration-300 ease-in-out ${
+            expanded ? 'px-6' : 'px-[22px]'
+          }`}
+        >
           <button
             onClick={() => handleNav('home')}
             data-cursor="interactive"
-            className="group flex items-center gap-3 w-full"
+            className={`group flex items-center w-full transition-[gap] duration-300 ease-in-out ${
+              expanded ? 'gap-3' : 'gap-0'
+            }`}
             aria-label="Go to top"
           >
             <span className="relative grid h-14 w-14 shrink-0 place-items-center">
@@ -249,13 +273,21 @@ export function Navbar() {
                 />
               </span>
             </span>
-            <span className="font-display text-lg text-text-high text-left leading-tight">
+            <span
+              className={`overflow-hidden whitespace-nowrap font-display text-lg text-text-high text-left leading-tight transition-[opacity,max-width] duration-200 ease-in-out ${
+                expanded ? 'max-w-[180px] opacity-100 delay-100' : 'max-w-0 opacity-0'
+              }`}
+            >
               Jopet Pallarcon <span className="text-teal">.</span>
             </span>
           </button>
         </div>
 
-        <nav className="relative flex-1 overflow-y-auto no-scrollbar px-4 py-6">
+        <nav
+          className={`relative flex-1 overflow-y-auto no-scrollbar py-6 transition-[padding] duration-300 ease-in-out ${
+            expanded ? 'px-4' : 'px-[18px]'
+          }`}
+        >
           <div
             ref={wrapRef}
             className="relative"
@@ -302,7 +334,13 @@ export function Navbar() {
 
               return (
                 <div key={group.label} className={gi > 0 ? 'mt-7' : ''}>
-                  <p className="mb-2 pl-3 font-mono text-[11px] text-text-mid">{group.label}</p>
+                  <p
+                    className={`overflow-hidden whitespace-nowrap pl-3 font-mono text-[11px] text-text-mid transition-[opacity,max-height,margin-bottom] duration-200 ease-in-out ${
+                      expanded ? 'max-h-6 mb-2 opacity-100 delay-100' : 'max-h-0 mb-0 opacity-0'
+                    }`}
+                  >
+                    {group.label}
+                  </p>
 
                   <div className="relative">
                     {/* Each group is its own bus: dotted trace behind the nodes */}
@@ -333,6 +371,7 @@ export function Navbar() {
                             index={String(flat).padStart(2, '0')}
                             status={status}
                             hovered={hovered === item.id}
+                            expanded={expanded}
                             onSelect={handleNav}
                             onEnter={handleEnter}
                           />
@@ -346,8 +385,16 @@ export function Navbar() {
           </div>
         </nav>
 
-        <div className="relative px-6 py-5 border-t border-border-soft">
-          <p className="font-mono text-[11px] text-text-low">
+        <div
+          className={`relative py-5 border-t border-border-soft transition-[padding] duration-300 ease-in-out ${
+            expanded ? 'px-6' : 'px-[22px]'
+          }`}
+        >
+          <p
+            className={`overflow-hidden whitespace-nowrap font-mono text-[11px] text-text-low transition-opacity duration-200 ease-in-out ${
+              expanded ? 'opacity-100 delay-100' : 'opacity-0'
+            }`}
+          >
             © {new Date().getFullYear()} Jopet Pallarcon
           </p>
         </div>

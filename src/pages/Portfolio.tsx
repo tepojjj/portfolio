@@ -37,7 +37,7 @@ export function Portfolio() {
           <SiteBackground />
           <CustomCursor />
           <Navbar />
-          <div className="lg:pl-72">
+          <div className="lg:pl-[84px]">
             <main className="pt-16 lg:pt-0">
               <Hero />
               <Marquee />
