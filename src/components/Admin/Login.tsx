@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
-import { Navigate } from 'react-router-dom'
-import { Lock } from 'lucide-react'
+import { Link, Navigate } from 'react-router-dom'
+import { Lock, X } from 'lucide-react'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
 import { AdminNotice } from './AdminNotice'
@@ -36,7 +36,15 @@ export function AdminLogin() {
 
   return (
     <div className="min-h-screen bg-canvas flex items-center justify-center px-6">
-      <div className="w-full max-w-sm">
+      <div className="relative w-full max-w-sm">
+        <Link
+          to="/"
+          aria-label="Close and return to site"
+          title="Close"
+          className="absolute -top-1 right-0 grid h-8 w-8 place-items-center border border-border text-text-mid hover:text-text-high hover:border-teal transition-colors"
+        >
+          <X size={16} />
+        </Link>
         <div className="flex items-center gap-2 mb-8 justify-center text-text-mid">
           <Lock size={16} />
           <span className="font-mono text-xs uppercase tracking-wider">Admin access</span>
