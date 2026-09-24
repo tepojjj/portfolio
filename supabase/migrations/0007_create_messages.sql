@@ -45,3 +45,9 @@ create policy "Authenticated delete"
   using (true);
 
 create index if not exists messages_created_at_idx on public.messages (created_at desc);
+
+-- Data API grants (required for new tables from Oct 30, 2026: Supabase no
+-- longer auto-grants access). RLS policies above still decide which rows.
+grant insert on public.messages to anon;
+grant select, insert, update, delete on public.messages to authenticated;
+grant all on public.messages to service_role;

@@ -96,3 +96,9 @@ create policy "Authenticated insert"
   on public.site_resume for insert
   to authenticated
   with check (true);
+
+-- Data API grants (required for new tables from Oct 30, 2026: Supabase no
+-- longer auto-grants access). RLS policies above still decide which rows.
+grant select on public.site_resume to anon;
+grant select, insert, update on public.site_resume to authenticated;
+grant all on public.site_resume to service_role;

@@ -69,3 +69,9 @@ create policy "Authenticated delete"
   using (true);
 
 create index if not exists projects_sort_order_idx on public.projects (sort_order, created_at);
+
+-- Data API grants (required for new tables from Oct 30, 2026: Supabase no
+-- longer auto-grants access). RLS policies above still decide which rows.
+grant select on public.projects to anon;
+grant select, insert, update, delete on public.projects to authenticated;
+grant all on public.projects to service_role;

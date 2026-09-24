@@ -80,3 +80,9 @@ create policy "Authenticated delete"
   using (true);
 
 create index if not exists experience_sort_order_idx on public.experience (sort_order, created_at);
+
+-- Data API grants (required for new tables from Oct 30, 2026: Supabase no
+-- longer auto-grants access). RLS policies above still decide which rows.
+grant select on public.experience to anon;
+grant select, insert, update, delete on public.experience to authenticated;
+grant all on public.experience to service_role;
