@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
-import { LogOut, Plus, Pencil, Trash2, ExternalLink } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { LogOut, Plus, Pencil, Trash2, ExternalLink, ArrowLeft } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import type { DbProject, ProjectDraft, DbExperience, ExperienceDraft } from '@/lib/types'
 import { normalizeUrl } from '@/utils/url'
@@ -138,12 +139,20 @@ export function AdminDashboard() {
               Changes here show up on the live site the next time it's loaded.
             </p>
           </div>
-          <button
-            onClick={handleSignOut}
-            className="inline-flex items-center gap-2 px-4 py-2 border border-border text-sm text-text-mid hover:text-text-high hover:border-teal transition-colors shrink-0 self-start sm:self-auto"
-          >
-            <LogOut size={15} /> Sign out
-          </button>
+          <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 px-4 py-2 border border-border text-sm text-text-mid hover:text-text-high hover:border-teal transition-colors"
+            >
+              <ArrowLeft size={15} /> Back to site
+            </Link>
+            <button
+              onClick={handleSignOut}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-border text-sm text-text-mid hover:text-text-high hover:border-teal transition-colors"
+            >
+              <LogOut size={15} /> Sign out
+            </button>
+          </div>
         </div>
 
         <div className="flex items-center gap-1 mb-8 border-b border-border-soft overflow-x-auto no-scrollbar">

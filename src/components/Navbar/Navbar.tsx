@@ -11,8 +11,10 @@ import {
   LineChart,
   Briefcase,
   Mail,
+  ShieldCheck,
   type LucideIcon,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useActiveSection, useScrollProgress } from '@/hooks/useScrollProgress'
 import { useDecode } from '@/hooks/useDecode'
 import profileImg from '@/assets/profile.png'
@@ -390,9 +392,29 @@ export function Navbar() {
             expanded ? 'px-6' : 'px-[22px]'
           }`}
         >
+          <Link
+            to="/admin"
+            data-cursor="interactive"
+            aria-label="Admin login"
+            title={expanded ? undefined : 'Admin'}
+            className={`group flex items-center transition-[gap] duration-300 ease-in-out ${
+              expanded ? 'mb-4 gap-4' : 'mb-0 gap-0'
+            }`}
+          >
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[6px] border border-border bg-surface text-text-low transition-[color,border-color] duration-200 group-hover:border-teal/60 group-hover:text-teal group-focus-visible:text-teal">
+              <ShieldCheck size={16} />
+            </span>
+            <span
+              className={`overflow-hidden whitespace-nowrap text-sm text-text-mid transition-[opacity,max-width] duration-200 ease-in-out group-hover:text-text-high ${
+                expanded ? 'max-w-[160px] opacity-100 delay-100' : 'max-w-0 opacity-0'
+              }`}
+            >
+              Admin
+            </span>
+          </Link>
           <p
-            className={`overflow-hidden whitespace-nowrap font-mono text-[11px] text-text-low transition-opacity duration-200 ease-in-out ${
-              expanded ? 'opacity-100 delay-100' : 'opacity-0'
+            className={`overflow-hidden whitespace-nowrap font-mono text-[11px] text-text-low transition-[opacity,max-height] duration-200 ease-in-out ${
+              expanded ? 'max-h-6 opacity-100 delay-100' : 'max-h-0 opacity-0'
             }`}
           >
             © {new Date().getFullYear()} Jopet Pallarcon
@@ -473,6 +495,14 @@ export function Navbar() {
                 ))}
               </div>
             ))}
+            <Link
+              to="/admin"
+              onClick={() => setMobileOpen(false)}
+              className="inline-flex items-center gap-2 font-mono text-sm text-text-low hover:text-teal transition-colors"
+            >
+              <ShieldCheck size={16} />
+              Admin
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
